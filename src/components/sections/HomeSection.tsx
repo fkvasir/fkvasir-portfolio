@@ -36,7 +36,7 @@ const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
             </div>
             <div className="flex items-center gap-2 text-gray-300">
               <span className="text-brand1">🌍</span>
-              <span>Philippines</span>
+              <span>Philippines &#40; Remote &#41;</span>
             </div>
             <div className="flex items-center gap-2 text-gray-300">
               <span className="text-brand1">💼</span>

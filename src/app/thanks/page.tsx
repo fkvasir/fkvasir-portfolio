@@ -1,24 +1,29 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { FaCheckCircle, FaHome } from "react-icons/fa";
+import { FaArrowLeft, FaCheckCircle } from "react-icons/fa";
 
 export default function ThanksPage() {
   return (
-    <div className="min-h-screen bg-bg2 flex flex-col items-center justify-center px-4">
-      <div className="text-center max-w-lg">
-        <FaCheckCircle className="text-brand1 text-6xl mx-auto mb-6" />
-        <h1 className="text-4xl font-bold mb-4 text-white">Message Sent!</h1>
-        <p className="text-gray-300 text-lg mb-8">
-          Thank you for reaching out. I&apos;ll get back to you as soon as
-          possible!
+    <div className="min-h-screen bg-bg1 flex items-center justify-center px-4">
+      <div className="max-w-lg w-full bg-bg2 border border-zinc-700 rounded-lg p-8 text-center">
+        <div className="flex justify-center mb-6">
+          <FaCheckCircle className="text-brand1 text-6xl" />
+        </div>
+
+        <h1 className="text-3xl font-bold text-white mb-4">Thank You!</h1>
+        <p className="text-gray-400 mb-8">
+          Your message has been successfully sent. I&apos;ll get back to you as
+          soon as possible.
         </p>
 
-        <Link href="/">
-          <Button className="bg-brand1 text-black hover:bg-brand2">
-            <FaHome className="mr-2" /> Back to Homepage
-          </Button>
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-brand1 text-black font-medium rounded-md hover:bg-brand2 transition-colors"
+        >
+          <FaArrowLeft size={14} />
+          <span>Back to Homepage</span>
         </Link>
       </div>
     </div>
