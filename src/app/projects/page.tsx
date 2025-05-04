@@ -80,8 +80,9 @@ const projects = [
       "A machine learning-based system to identify malware applications with SMOTE for addressing class imbalance.",
     image: "/coding-background.jpg",
     tags: ["Python", "Random Forest", "SVM", "SMOTE", "Data Mining"],
-    github: "#",
-    demo: "#",
+    github:
+      "https://github.com/fkvasir/Malware-Detection-Using-Machine-Learning",
+    demo: "https://github.com/fkvasir/Malware-Detection-Using-Machine-Learning",
     category: "ml-ai",
     period: "October 2024 - December 2024",
     longDescription:
@@ -113,7 +114,7 @@ export default function ProjectsPage() {
       : projects.filter((project) => project.category === activeCategory);
 
   return (
-    <div className="min-h-screen bg-bg1 pt-32 pb-20 px-4 md:px-8">
+    <div className="min-h-screen bg-bg1 pt-20 pb-20 px-4 md:px-8">
       {/* Header with back button */}
       <div className="max-w-7xl mx-auto mb-12">
         <Link
