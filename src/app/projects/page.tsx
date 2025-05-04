@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaArrowLeft, FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 
-// Dummy projects data
+// Projects data with categories
 const projects = [
   {
     id: 1,
@@ -16,6 +16,7 @@ const projects = [
     tags: ["React", "Node.js", "MongoDB", "Stripe"],
     github: "https://github.com/fkvasir/project1",
     demo: "https://demo-project1.vercel.app",
+    category: "software",
   },
   {
     id: 2,
@@ -26,6 +27,7 @@ const projects = [
     tags: ["Next.js", "TypeScript", "Firebase", "Tailwind CSS"],
     github: "https://github.com/fkvasir/project2",
     demo: "https://demo-project2.vercel.app",
+    category: "software",
   },
   {
     id: 3,
@@ -36,6 +38,7 @@ const projects = [
     tags: ["Vue.js", "Express", "PostgreSQL", "Chart.js"],
     github: "https://github.com/fkvasir/project3",
     demo: "https://demo-project3.vercel.app",
+    category: "software",
   },
   {
     id: 4,
@@ -46,6 +49,7 @@ const projects = [
     tags: ["React Native", "Redux", "Firebase", "Expo"],
     github: "https://github.com/fkvasir/project4",
     demo: "https://demo-project4.vercel.app",
+    category: "software",
   },
   {
     id: 5,
@@ -56,6 +60,7 @@ const projects = [
     tags: ["JavaScript", "HTML/CSS", "OpenWeather API"],
     github: "https://github.com/fkvasir/project5",
     demo: "https://demo-project5.vercel.app",
+    category: "software",
   },
   {
     id: 6,
@@ -66,10 +71,47 @@ const projects = [
     tags: ["React", "GraphQL", "Apollo", "Material UI"],
     github: "https://github.com/fkvasir/project6",
     demo: "https://demo-project6.vercel.app",
+    category: "software",
+  },
+  {
+    id: 7,
+    title: "Malware Detection Using Machine Learning",
+    description:
+      "A machine learning-based system to identify malware applications with SMOTE for addressing class imbalance.",
+    image: "/coding-background.jpg",
+    tags: ["Python", "Random Forest", "SVM", "SMOTE", "Data Mining"],
+    github: "#",
+    demo: "#",
+    category: "ml-ai",
+    period: "October 2024 - December 2024",
+    longDescription:
+      "As part of my Data Mining and Analysis coursework, I developed a machine learning-based system to identify malware applications using a dataset from Kaggle. I compared various classification techniques, including Random Forest, Decision Trees, Gradient Boosting, and Support Vector Machines (SVM), to determine the most effective approach for malware detection. To address the issue of class imbalance, I implemented SMOTE (Synthetic Minority Over-sampling Technique), which helped generate synthetic data points for the underrepresented classes, improving model performance and accuracy. This project also involved feature engineering, data pre-processing, and model evaluation to ensure accurate predictions and minimize false positives.",
+  },
+  {
+    id: 8,
+    title: "Car Type Classification Using CNN",
+    description:
+      "Deep learning model using Convolutional Neural Networks to classify car types based on images with data augmentation.",
+    image: "/about-me_coding.jpg",
+    tags: ["Python", "TensorFlow", "CNN", "Computer Vision", "Deep Learning"],
+    github: "https://github.com/fkvasir/CSC173_Intelligent-Systems/tree/main",
+    demo: "https://github.com/fkvasir/CSC173_Intelligent-Systems/tree/main",
+    category: "ml-ai",
+    period: "September 2024 - December 2024",
+    longDescription:
+      "For my Intelligent Systems coursework, I developed a deep learning model using Convolutional Neural Networks (CNN) to classify car types based on images. I pre-processed images by applying data augmentation techniques, adjusted model hyperparameters such as learning rate and weight adjustments, and modified the algorithm to ignore blurry images for more accurate classification. This project deepened my knowledge of neural networks, computer vision, and model optimization for real-world applications.",
   },
 ];
 
 export default function ProjectsPage() {
+  const [activeCategory, setActiveCategory] = useState("all");
+
+  // Filter projects based on selected category
+  const filteredProjects =
+    activeCategory === "all"
+      ? projects
+      : projects.filter((project) => project.category === activeCategory);
+
   return (
     <div className="min-h-screen bg-bg1 pt-32 pb-20 px-4 md:px-8">
       {/* Header with back button */}
@@ -93,14 +135,48 @@ export default function ProjectsPage() {
         <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
           My Projects
         </h1>
-        <p className="text-gray-400">
-          A showcase of my recent web development work
+        <p className="text-gray-400 mb-8">
+          A showcase of my recent development work
         </p>
+
+        {/* Category filter */}
+        <div className="flex flex-wrap gap-4 mb-8">
+          <button
+            onClick={() => setActiveCategory("all")}
+            className={`px-6 py-2 rounded-md transition ${
+              activeCategory === "all"
+                ? "bg-brand1 text-black font-medium"
+                : "bg-zinc-800 text-white hover:bg-zinc-700"
+            }`}
+          >
+            All Projects
+          </button>
+          <button
+            onClick={() => setActiveCategory("software")}
+            className={`px-6 py-2 rounded-md transition ${
+              activeCategory === "software"
+                ? "bg-brand1 text-black font-medium"
+                : "bg-zinc-800 text-white hover:bg-zinc-700"
+            }`}
+          >
+            Software Engineering
+          </button>
+          <button
+            onClick={() => setActiveCategory("ml-ai")}
+            className={`px-6 py-2 rounded-md transition ${
+              activeCategory === "ml-ai"
+                ? "bg-brand1 text-black font-medium"
+                : "bg-zinc-800 text-white hover:bg-zinc-700"
+            }`}
+          >
+            Machine Learning / AI
+          </button>
+        </div>
       </div>
 
       {/* Projects grid */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects.map((project) => (
+        {filteredProjects.map((project) => (
           <div
             key={project.id}
             className="bg-bg2 border border-zinc-700 rounded-lg overflow-hidden hover:border-brand1/50 transition-all duration-300 flex flex-col"
@@ -139,6 +215,9 @@ export default function ProjectsPage() {
               <h3 className="text-xl font-bold text-white mb-2">
                 {project.title}
               </h3>
+              {project.period && (
+                <p className="text-brand1 text-xs mb-2">{project.period}</p>
+              )}
               <p className="text-gray-400 text-sm mb-4 flex-grow">
                 {project.description}
               </p>
@@ -159,20 +238,13 @@ export default function ProjectsPage() {
         ))}
       </div>
 
-      {/* Pagination (not functional, just for design) */}
-      <div className="flex justify-center mt-12">
-        <div className="flex gap-2">
-          <button className="w-10 h-10 rounded-md bg-brand1 text-black font-medium flex items-center justify-center">
-            1
-          </button>
-          <button className="w-10 h-10 rounded-md bg-zinc-800 text-white hover:bg-zinc-700 transition flex items-center justify-center">
-            2
-          </button>
-          <button className="w-10 h-10 rounded-md bg-zinc-800 text-white hover:bg-zinc-700 transition flex items-center justify-center">
-            3
-          </button>
+      {filteredProjects.length === 0 && (
+        <div className="text-center py-20">
+          <p className="text-gray-400 text-lg">
+            No projects found in this category.
+          </p>
         </div>
-      </div>
+      )}
     </div>
   );
 }

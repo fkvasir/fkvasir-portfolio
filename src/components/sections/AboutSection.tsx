@@ -28,9 +28,11 @@ const AboutSection = () => {
             <span className="text-gray-400">I&apos;m</span>{" "}
             <span className="text-brand1">FKVASIR</span>{" "}
             <span className="text-gray-400">
-              and I specialize in web development that utilizes
+              and I specialize in web development, app development, machine
+              learning, deep learning and AI integration in systems that
+              utilizes
             </span>{" "}
-            <span className="text-brand1">HTML, CSS, JavaScript</span>.
+            <span className="text-brand1">HTML, CSS, JavaScript, Python</span>.
           </p>
           <p className="mb-4 text-gray-400">
             I&apos;m passionate about creating intuitive user experiences and

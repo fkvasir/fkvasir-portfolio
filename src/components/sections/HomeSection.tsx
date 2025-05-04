@@ -48,7 +48,7 @@ const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
             </div>
           </div>
 
-          <div className="flex gap-2 mt-6">
+          <div className="flex gap-2 mt-6 flex-wrap">
             <span className="px-2 py-1 text-xs bg-brand1 text-black rounded">
               HTML
             </span>
@@ -59,7 +59,28 @@ const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
               JS
             </span>
             <span className="px-2 py-1 text-xs bg-brand1 text-black rounded">
+              Typescript
+            </span>
+            <span className="px-2 py-1 text-xs bg-brand1 text-black rounded">
               React
+            </span>
+            <span className="px-2 py-1 text-xs bg-brand1 text-black rounded">
+              React Native
+            </span>
+            <span className="px-2 py-1 text-xs bg-brand1 text-black rounded">
+              NextJS
+            </span>
+            <span className="px-2 py-1 text-xs bg-brand1 text-black rounded">
+              MongoDB
+            </span>
+            <span className="px-2 py-1 text-xs bg-brand1 text-black rounded">
+              Express.js
+            </span>
+            <span className="px-2 py-1 text-xs bg-brand1 text-black rounded">
+              Node.js
+            </span>
+            <span className="px-2 py-1 text-xs bg-brand1 text-black rounded">
+              Python
             </span>
           </div>
 
@@ -106,7 +127,7 @@ const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
           {/* Stats */}
           <div className="flex flex-col md:flex-row gap-6 mt-10">
             <div className="flex items-center gap-4 bg-zinc-800/50 p-4 rounded-lg">
-              <span className="text-3xl font-bold text-brand1">5</span>
+              <span className="text-3xl font-bold text-brand1">4</span>
               <span className="text-sm text-gray-300">
                 Programming
                 <br />
