@@ -59,7 +59,7 @@ const SkillsSection = () => {
       </div>
 
       {/* Skill icons */}
-      <div className="flex flex-wrap justify-center gap-8">
+      <div className="flex flex-wrap justify-center gap-8 mx-32">
         {/* React */}
         <div className="w-20 h-20 rounded-full bg-zinc-800 border border-blue-500/30 flex items-center justify-center text-white">
           <svg
