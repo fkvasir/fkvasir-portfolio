@@ -12,9 +12,7 @@
 6. [Folder Structure](#folder-structure)  
 7. [Usage](#usage)  
 8. [Deployment](#deployment)  
-9. [Contributing](#contributing)  
 10. [License](#license)  
-11. [Contact](#contact)
 
 ---
 
@@ -33,9 +31,7 @@ _Preview of the website in action_
 
 ## 🔥 Features
 - Responsive design (mobile, tablet, desktop)  
-- Dark / Light mode toggle  
-- Project showcase with filter & search  
-- Blog section with Markdown support  
+- Project showcase
 - Contact form with EmailJS integration  
 - Smooth animations & transitions  
 
