@@ -1,5 +1,5 @@
 # FKVASIR's Portfolio Website  
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white) ![License](https://img.shields.io/badge/License-MIT-blue.svg)
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white) ![License](https://img.shields.io/badge/License-GNU-blue.svg)
 
 ---
 
@@ -29,9 +29,6 @@ A brief description of your portfolio website—what technologies you used, the 
 [Live Demo](https://fkvasir.vercel.app)  
 _Preview of the website in action_
 
-<kbd>![Homepage Screenshot](./assets/homepage.png)</kbd>  
-<kbd>![Project Page Screenshot](./assets/projects.png)</kbd>
-
 ---
 
 ## 🔥 Features
@@ -54,13 +51,14 @@ _Preview of the website in action_
 | Hosting    | Vercel / Netlify                     |
 | Animations | Framer Motion                        |
 | Forms      | React Hook Form                      |
-| CMS        | Sanity / Contentful (optional)       |
 
 ---
 
 ## ⚙️ Installation
-1. **Clone the repo**  
+#### 1. **Clone the repo**  
    ```bash
    git clone https://github.com/your-username/your-portfolio.git
    ```
+
+# TO BE CONTINUED KATULGON NAKO (NALINGAW HAHAHAHA)
    
