@@ -6,6 +6,7 @@ import Link from "next/link";
 import LazySection from "@/components/LazySection";
 import { FaDiscord, FaGithub, FaLinkedin } from "react-icons/fa";
 import { FaSquareUpwork } from "react-icons/fa6";
+import { motion } from "framer-motion";
 
 // Import section components without dynamic loading
 import HomeSection from "@/components/sections/HomeSection";
@@ -68,51 +69,30 @@ function Home() {
           </div>
           {/* Home, Projects, About */}
           <nav className="flex flex-col md:flex-row justify-between items-center w-full md:w-auto">
-            <ul className="flex flex-row items-center gap-4 md:gap-10 mb-4 md:mb-0 md:mr-10">
-              <li>
-                <Link
-                  href="#home"
-                  className={`navigation-link ${
-                    activeSection === "home" ? "active" : ""
-                  }`}
-                  onClick={() => setActiveSection("home")}
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#about"
-                  className={`navigation-link ${
-                    activeSection === "about" ? "active" : ""
-                  }`}
-                  onClick={() => setActiveSection("about")}
-                >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#projects"
-                  className={`navigation-link ${
-                    activeSection === "projects" ? "active" : ""
-                  }`}
-                  onClick={() => setActiveSection("projects")}
-                >
-                  Projects
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#contacts"
-                  className={`navigation-link ${
-                    activeSection === "contacts" ? "active" : ""
-                  }`}
-                  onClick={() => setActiveSection("contacts")}
-                >
-                  Contacts
-                </Link>
-              </li>
+            <ul className="flex flex-row items-center gap-4 md:gap-10 mb-4 md:mb-0 md:mr-10 relative">
+              {["home", "about", "projects", "contacts"].map((section) => (
+                <li key={section} className="relative">
+                  <Link
+                    href={`#${section}`}
+                    className="navigation-link relative z-10"
+                    onClick={() => setActiveSection(section)}
+                  >
+                    {section.charAt(0).toUpperCase() + section.slice(1)}
+                    {activeSection === section && (
+                      <motion.div
+                        layoutId="activeIndicator"
+                        className="absolute -inset-x-2 -inset-y-1 bg-brand1/20 rounded-md border border-brand1/30"
+                        initial={false}
+                        transition={{
+                          type: "spring",
+                          stiffness: 500,
+                          damping: 35,
+                        }}
+                      />
+                    )}
+                  </Link>
+                </li>
+              ))}
             </ul>
             {/* Socials */}
             <ul className="flex flex-row ml-3 items-center gap-4 md:gap-5">

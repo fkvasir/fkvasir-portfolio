@@ -1,9 +1,46 @@
 import React from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 
 const SkillsSection = () => {
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        delayChildren: 0.2,
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 50, opacity: 0 },
+    visible: { y: 0, opacity: 1 },
+  };
+
+  const skillCategories = [
+    { icon: "🖥️", title: "Web Development" },
+    { icon: "📱", title: "App Development" },
+    { icon: "🧠", title: "AI & Machine Learning" },
+  ];
+
   return (
-    <section id="skills" className="min-h-screen bg-bg2 py-20 relative">
+    <motion.section
+      id="skills"
+      className="min-h-screen bg-bg2 py-20 relative overflow-hidden"
+      ref={ref}
+      variants={containerVariants}
+      initial="hidden"
+      animate={inView ? "visible" : "hidden"}
+    >
       {/* Background image */}
       <div className="absolute inset-0 z-0 opacity-10">
         <Image
@@ -15,47 +52,90 @@ const SkillsSection = () => {
       </div>
 
       {/* Section indicator */}
-      <div className="flex items-center justify-center mb-16">
-        <div className="w-1 h-12 bg-brand1/30"></div>
-        <div className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-brand1 text-brand1 mx-2">
+      <motion.div
+        variants={itemVariants}
+        className="flex items-center justify-center mb-16"
+      >
+        <motion.div
+          initial={{ width: 0 }}
+          animate={inView ? { width: 4 } : { width: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="h-12 bg-brand1/30"
+        />
+        <motion.div
+          initial={{ scale: 0, rotate: -180 }}
+          animate={
+            inView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }
+          }
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-brand1 text-brand1 mx-2 bg-bg2"
+        >
           0
-        </div>
-        <div className="w-1 h-12 bg-brand1/30"></div>
-      </div>
+        </motion.div>
+        <motion.div
+          initial={{ width: 0 }}
+          animate={inView ? { width: 4 } : { width: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="h-12 bg-brand1/30"
+        />
+      </motion.div>
 
       {/* Code bracket icon */}
-      <div className="text-center mb-10">
-        <span className="text-5xl text-brand1">&lt;/&gt;</span>
-        <h2 className="text-2xl font-bold mt-4 text-brand1">Skills</h2>
-        <p className="text-gray-400 mt-2">
+      <motion.div variants={itemVariants} className="text-center mb-10">
+        <motion.span
+          initial={{ scale: 0, rotate: 360 }}
+          animate={inView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: 360 }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className="text-5xl text-brand1 inline-block"
+        >
+          &lt;/&gt;
+        </motion.span>
+
+        <motion.h2
+          variants={itemVariants}
+          className="text-2xl font-bold mt-4 text-brand1"
+        >
+          Skills
+        </motion.h2>
+
+        <motion.p variants={itemVariants} className="text-gray-400 mt-2">
           I am striving to never stop learning and improving
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
 
       {/* Skill categories */}
       <div className="max-w-4xl mx-auto px-4 flex flex-wrap justify-center gap-8 mb-16">
-        <div className="bg-brand1/10 border border-brand1/30 rounded-lg p-6 text-center w-64">
-          <div className="w-12 h-12 bg-zinc-800 rounded flex items-center justify-center mx-auto mb-4">
-            <span className="text-2xl text-brand1">🖥️</span>
-          </div>
-          <h3 className="text-lg font-medium text-white">Web Development</h3>
-        </div>
+        {skillCategories.map((category, index) => (
+          <motion.div
+            key={category.title}
+            variants={itemVariants}
+            whileHover={{
+              scale: 1.05,
+              rotateY: 10,
+              boxShadow: "0 20px 40px rgba(18, 247, 214, 0.2)",
+            }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-brand1/10 border border-brand1/30 rounded-lg p-6 text-center w-64 cursor-pointer backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={
+                inView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }
+              }
+              transition={{ delay: 0.8 + index * 0.2, duration: 0.6 }}
+              className="w-12 h-12 bg-zinc-800 rounded flex items-center justify-center mx-auto mb-4"
+            >
+              <span className="text-2xl">{category.icon}</span>
+            </motion.div>
 
-        <div className="bg-brand1/10 border border-brand1/30 rounded-lg p-6 text-center w-64">
-          <div className="w-12 h-12 bg-zinc-800 rounded flex items-center justify-center mx-auto mb-4">
-            <span className="text-2xl text-brand1">📱</span>
-          </div>
-          <h3 className="text-lg font-medium text-white">App Development</h3>
-        </div>
-
-        <div className="bg-brand1/10 border border-brand1/30 rounded-lg p-6 text-center w-64">
-          <div className="w-12 h-12 bg-zinc-800 rounded flex items-center justify-center mx-auto mb-4">
-            <span className="text-2xl text-brand1">🧠</span>
-          </div>
-          <h3 className="text-lg font-medium text-white">
-            AI & Machine Learning
-          </h3>
-        </div>
+            <motion.h3
+              variants={itemVariants}
+              className="text-lg font-medium text-white"
+            >
+              {category.title}
+            </motion.h3>
+          </motion.div>
+        ))}
       </div>
 
       {/* Skill icons */}
@@ -473,7 +553,7 @@ const SkillsSection = () => {
           </svg>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

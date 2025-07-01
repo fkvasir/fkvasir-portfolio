@@ -9,6 +9,10 @@
   --font-mono: var(--font-geist-mono);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body {
   margin: 0;
@@ -24,8 +28,6 @@ body {
     @apply text-brand1 font-semibold;
   }
 }
-
-
 
 @layer base {
   :root {
@@ -82,8 +84,6 @@ body {
     --chart-5: 340 75% 55%;
   }
 }
-
-
 
 @layer base {
   * {
