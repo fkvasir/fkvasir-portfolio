@@ -214,11 +214,11 @@ const AboutSection = () => {
                 transition={{ duration: 1.2, ease: "easeOut" }}
               >
                 <Image
-                  src="/about-me_coding.jpg"
-                  alt="Developer coding"
-                  width={600}
-                  height={400}
-                  className="object-cover"
+                  src="/me_coding.jpeg"
+                  alt="About me"
+                  width={400}
+                  height={300}
+                  className="object-cover w-full h-auto"
                 />
               </motion.div>
 

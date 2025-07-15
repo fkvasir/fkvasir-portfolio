@@ -1,5 +1,4 @@
 import React from "react";
-import { FaGithub, FaLinkedin, FaDiscord } from "react-icons/fa";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -95,34 +94,6 @@ const ContactSection = () => {
             >
               Send Message <span className="ml-2">↗</span>
             </Button>
-          </div>
-
-          {/* Social links */}
-          <div className="flex justify-center gap-4 pt-8">
-            <a
-              href="https://github.com/fkvasir"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center text-brand1 hover:bg-zinc-700 transition"
-            >
-              <FaGithub size={18} />
-            </a>
-            <a
-              href="https://linkedin.com/in/fulgent-kvasir-lavesores-662900231/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center text-brand1 hover:bg-zinc-700 transition"
-            >
-              <FaLinkedin size={18} />
-            </a>
-            <a
-              href="https://discord.com/users/727883349179498538"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center text-brand1 hover:bg-zinc-700 transition"
-            >
-              <FaDiscord size={18} />
-            </a>
           </div>
         </form>
       </div>
