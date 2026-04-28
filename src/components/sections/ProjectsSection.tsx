@@ -3,6 +3,49 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { FaLock } from "react-icons/fa";
+import { projects, type Project } from "@/lib/projects";
+
+const ProjectCard = ({ project }: { project: Project }) => (
+  <div className="group relative w-72 shrink-0 bg-bg2 border border-zinc-700 rounded-lg overflow-hidden hover:border-brand1/50 transition-colors duration-300 flex flex-col">
+    <div className="h-40 relative">
+      <Image
+        src={project.image}
+        alt={project.title}
+        fill
+        sizes="288px"
+        className="object-cover"
+      />
+      {project.private && (
+        <div className="absolute top-2 right-2 z-10 flex items-center gap-1 px-2 py-1 rounded bg-black/70 border border-brand1/40 text-brand1 text-xs backdrop-blur-sm">
+          <FaLock size={9} />
+          <span>NDA</span>
+        </div>
+      )}
+    </div>
+    <div className="p-4 flex flex-col flex-grow">
+      <h3 className="text-white font-semibold text-sm leading-snug mb-1 line-clamp-2">
+        {project.title}
+      </h3>
+      {project.company && (
+        <p className="text-brand2 text-xs">{project.company}</p>
+      )}
+      {project.period && (
+        <p className="text-brand1 text-[10px] mt-1">{project.period}</p>
+      )}
+      <div className="flex flex-wrap gap-1 mt-3">
+        {project.tags.slice(0, 3).map((tag, i) => (
+          <span
+            key={i}
+            className="px-2 py-0.5 text-[10px] bg-brand1/10 text-brand1 rounded border border-brand1/30"
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+);
 
 const ProjectsSection = () => {
   const [ref, inView] = useInView({
@@ -27,10 +70,9 @@ const ProjectsSection = () => {
     visible: { y: 0, opacity: 1 },
   };
 
-  const laptopVariants = {
-    hidden: { scale: 0.8, opacity: 0, rotateY: -30 },
-    visible: { scale: 1, opacity: 1, rotateY: 0 },
-  };
+  // Duplicate the list so the marquee loops seamlessly when the first copy
+  // finishes scrolling out (-50% lands exactly on the start of the duplicate).
+  const marqueeProjects = [...projects, ...projects];
 
   return (
     <motion.section
@@ -83,88 +125,32 @@ const ProjectsSection = () => {
         </motion.p>
       </motion.div>
 
-      {/* Projects Carousel */}
-      <div className="max-w-5xl mx-auto px-4 relative">
-        {/* Carousel controls */}
-        <div className="flex items-center justify-between absolute top-1/2 -translate-y-1/2 w-full px-4 z-10">
-          <button
-            className="w-10 h-10 bg-zinc-800/80 rounded-full flex items-center justify-center border border-zinc-700 text-brand1 hover:bg-zinc-700 transition"
-            aria-label="Previous project"
-          >
-            &lt;
-          </button>
-          <button
-            className="w-10 h-10 bg-zinc-800/80 rounded-full flex items-center justify-center border border-zinc-700 text-brand1 hover:bg-zinc-700 transition"
-            aria-label="Next project"
-          >
-            &gt;
-          </button>
-        </div>
+      {/* Auto-scrolling marquee carousel */}
+      <motion.div
+        variants={itemVariants}
+        className="relative max-w-7xl mx-auto"
+      >
+        {/* Edge fade masks so cards visually melt at the rails */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-16 z-10 bg-gradient-to-r from-bg1 to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-16 z-10 bg-gradient-to-l from-bg1 to-transparent" />
 
-        {/* Project displays */}
-        <motion.div
-          variants={containerVariants}
-          className="flex justify-center gap-8"
+        <div className="overflow-hidden">
+          <div className="flex gap-6 w-max animate-marquee">
+            {marqueeProjects.map((project, i) => (
+              <ProjectCard key={`${project.id}-${i}`} project={project} />
+            ))}
+          </div>
+        </div>
+      </motion.div>
+
+      {/* View all projects button */}
+      <div className="text-center mt-16">
+        <Link
+          href="/projects"
+          className="inline-flex items-center gap-2 px-5 py-2 bg-brand1 text-black font-medium rounded-md hover:bg-brand2 transition-colors"
         >
-          <motion.div
-            variants={laptopVariants}
-            whileHover={{
-              scale: 1.05,
-              rotate: -3,
-              transition: { duration: 0.3 },
-            }}
-            className="w-56 transform -rotate-6"
-          >
-            <div className="bg-zinc-800 border border-zinc-700 rounded-t-lg p-2">
-              <div className="bg-zinc-900 rounded h-40 overflow-hidden">
-                <div className="font-mono text-sm text-green-400 p-3">
-                  <pre>{"function App() {\n  return <div>Hello</div>;\n}"}</pre>
-                </div>
-              </div>
-            </div>
-            <div className="h-8 bg-zinc-700 rounded-b-md flex items-center justify-center">
-              <div className="w-6 h-2 bg-zinc-800 rounded"></div>
-            </div>
-            <div className="h-3 w-16 bg-zinc-800 mx-auto rounded-b-full"></div>
-          </motion.div>
-
-          <motion.div
-            variants={laptopVariants}
-            whileHover={{
-              scale: 1.05,
-              y: -10,
-              boxShadow: "0 20px 40px rgba(18, 247, 214, 0.2)",
-              transition: { duration: 0.3 },
-            }}
-            className="w-64 z-10"
-          >
-            <div className="bg-zinc-800 border border-zinc-700 rounded-t-lg p-2">
-              <div className="bg-white rounded h-48 overflow-hidden">
-                <Image
-                  src="/coding-background.jpg"
-                  alt="Project Screenshot"
-                  width={300}
-                  height={200}
-                  className="object-cover w-full h-full"
-                />
-              </div>
-            </div>
-            <div className="h-8 bg-zinc-700 rounded-b-md flex items-center justify-center">
-              <div className="w-6 h-2 bg-zinc-800 rounded"></div>
-            </div>
-            <div className="h-3 w-16 bg-zinc-800 mx-auto rounded-b-full"></div>
-          </motion.div>
-        </motion.div>
-
-        {/* View all projects button */}
-        <div className="text-center mt-16">
-          <Link
-            href="/projects"
-            className="inline-flex items-center gap-2 px-5 py-2 bg-brand1 text-black font-medium rounded-md hover:bg-brand2 transition-colors"
-          >
-            View all <span>→</span>
-          </Link>
-        </div>
+          View all <span>→</span>
+        </Link>
       </div>
     </motion.section>
   );

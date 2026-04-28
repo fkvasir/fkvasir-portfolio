@@ -3,106 +3,13 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaArrowLeft, FaGithub, FaExternalLinkAlt } from "react-icons/fa";
-
-// Projects data with categories
-const projects = [
-  {
-    id: 1,
-    title: "E-Commerce Website",
-    description:
-      "A fully responsive e-commerce platform with product filtering, cart management, and secure checkout.",
-    image: "/coding-background.jpg",
-    tags: ["React", "Node.js", "MongoDB", "Stripe"],
-    github: "https://github.com/fkvasir/project1",
-    demo: "https://demo-project1.vercel.app",
-    category: "software",
-  },
-  {
-    id: 2,
-    title: "Task Management App",
-    description:
-      "Drag-and-drop task management application with team collaboration features.",
-    image: "/about-me_coding.jpg",
-    tags: ["Next.js", "TypeScript", "Firebase", "Tailwind CSS"],
-    github: "https://github.com/fkvasir/project2",
-    demo: "https://demo-project2.vercel.app",
-    category: "software",
-  },
-  {
-    id: 3,
-    title: "Finance Dashboard",
-    description:
-      "Interactive dashboard for tracking personal finances with data visualization.",
-    image: "/coding-background.jpg",
-    tags: ["Vue.js", "Express", "PostgreSQL", "Chart.js"],
-    github: "https://github.com/fkvasir/project3",
-    demo: "https://demo-project3.vercel.app",
-    category: "software",
-  },
-  {
-    id: 4,
-    title: "Fitness Tracker",
-    description:
-      "Mobile-responsive fitness tracking application with progress charts and workout plans.",
-    image: "/about-me_coding.jpg",
-    tags: ["React Native", "Redux", "Firebase", "Expo"],
-    github: "https://github.com/fkvasir/project4",
-    demo: "https://demo-project4.vercel.app",
-    category: "software",
-  },
-  {
-    id: 5,
-    title: "Weather App",
-    description:
-      "Real-time weather application with location detection and 7-day forecasts.",
-    image: "/coding-background.jpg",
-    tags: ["JavaScript", "HTML/CSS", "OpenWeather API"],
-    github: "https://github.com/fkvasir/project5",
-    demo: "https://demo-project5.vercel.app",
-    category: "software",
-  },
-  {
-    id: 6,
-    title: "Social Media Dashboard",
-    description:
-      "Comprehensive analytics dashboard for social media management and content scheduling.",
-    image: "/about-me_coding.jpg",
-    tags: ["React", "GraphQL", "Apollo", "Material UI"],
-    github: "https://github.com/fkvasir/project6",
-    demo: "https://demo-project6.vercel.app",
-    category: "software",
-  },
-  {
-    id: 7,
-    title: "Malware Detection Using Machine Learning",
-    description:
-      "A machine learning-based system to identify malware applications with SMOTE for addressing class imbalance.",
-    image: "/coding-background.jpg",
-    tags: ["Python", "Random Forest", "SVM", "SMOTE", "Data Mining"],
-    github:
-      "https://github.com/fkvasir/Malware-Detection-Using-Machine-Learning",
-    demo: "https://github.com/fkvasir/Malware-Detection-Using-Machine-Learning",
-    category: "ml-ai",
-    period: "October 2024 - December 2024",
-    longDescription:
-      "As part of my Data Mining and Analysis coursework, I developed a machine learning-based system to identify malware applications using a dataset from Kaggle. I compared various classification techniques, including Random Forest, Decision Trees, Gradient Boosting, and Support Vector Machines (SVM), to determine the most effective approach for malware detection. To address the issue of class imbalance, I implemented SMOTE (Synthetic Minority Over-sampling Technique), which helped generate synthetic data points for the underrepresented classes, improving model performance and accuracy. This project also involved feature engineering, data pre-processing, and model evaluation to ensure accurate predictions and minimize false positives.",
-  },
-  {
-    id: 8,
-    title: "Car Type Classification Using CNN",
-    description:
-      "Deep learning model using Convolutional Neural Networks to classify car types based on images with data augmentation.",
-    image: "/about-me_coding.jpg",
-    tags: ["Python", "TensorFlow", "CNN", "Computer Vision", "Deep Learning"],
-    github: "https://github.com/fkvasir/CSC173_Intelligent-Systems/tree/main",
-    demo: "https://github.com/fkvasir/CSC173_Intelligent-Systems/tree/main",
-    category: "ml-ai",
-    period: "September 2024 - December 2024",
-    longDescription:
-      "For my Intelligent Systems coursework, I developed a deep learning model using Convolutional Neural Networks (CNN) to classify car types based on images. I pre-processed images by applying data augmentation techniques, adjusted model hyperparameters such as learning rate and weight adjustments, and modified the algorithm to ignore blurry images for more accurate classification. This project deepened my knowledge of neural networks, computer vision, and model optimization for real-world applications.",
-  },
-];
+import {
+  FaArrowLeft,
+  FaGithub,
+  FaExternalLinkAlt,
+  FaLock,
+} from "react-icons/fa";
+import { projects } from "@/lib/projects";
 
 export default function ProjectsPage() {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -190,25 +97,38 @@ export default function ProjectsPage() {
                 fill
                 className="object-cover"
               />
-              {/* Overlay with buttons */}
-              <div className="absolute inset-0 bg-black/70 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-brand1 hover:bg-zinc-700 transition"
-                >
-                  <FaGithub size={20} />
-                </a>
-                <a
-                  href={project.demo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-brand1 hover:bg-zinc-700 transition"
-                >
-                  <FaExternalLinkAlt size={16} />
-                </a>
-              </div>
+              {/* NDA badge */}
+              {project.private && (
+                <div className="absolute top-3 right-3 z-10 flex items-center gap-1 px-2 py-1 rounded bg-black/70 border border-brand1/40 text-brand1 text-xs backdrop-blur-sm">
+                  <FaLock size={10} />
+                  <span>Private — NDA</span>
+                </div>
+              )}
+              {/* Overlay with buttons — only when at least one URL exists */}
+              {(project.github || project.demo) && (
+                <div className="absolute inset-0 bg-black/70 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-brand1 hover:bg-zinc-700 transition"
+                    >
+                      <FaGithub size={20} />
+                    </a>
+                  )}
+                  {project.demo && (
+                    <a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-brand1 hover:bg-zinc-700 transition"
+                    >
+                      <FaExternalLinkAlt size={16} />
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Project content */}
@@ -217,7 +137,15 @@ export default function ProjectsPage() {
                 {project.title}
               </h3>
               {project.period && (
-                <p className="text-brand1 text-xs mb-2">{project.period}</p>
+                <p className="text-brand1 text-xs mb-1">{project.period}</p>
+              )}
+              {project.company && (
+                <p className="text-brand2 text-sm">{project.company}</p>
+              )}
+              {project.role && (
+                <p className="text-gray-400 text-xs italic mb-3">
+                  {project.role}
+                </p>
               )}
               <p className="text-gray-400 text-sm mb-4 flex-grow">
                 {project.description}

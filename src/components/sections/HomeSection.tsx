@@ -190,7 +190,7 @@ const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
               className="flex items-center gap-2 text-gray-300"
             >
               <span className="text-brand1">🌐</span>
-              <span>www.fkvasir.dev</span>
+              <span>https://fkvasir.vercel.app</span>
             </motion.div>
           </motion.div>
 
@@ -223,12 +223,12 @@ const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
               boxShadow: "0 10px 25px rgba(18, 247, 214, 0.3)",
             }}
             whileTap={{ scale: 0.95 }}
-            href="/cv.pdf"
-            download
+            href="/resume.pdf"
+            download="Fulgent-Kvasir-Lavesores-Resume.pdf"
             className="flex items-center gap-2 mt-6 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-md hover:bg-zinc-700 transition"
           >
             <FaDownload />
-            <span className="text-white">Download CV</span>
+            <span className="text-white">Download Resume</span>
           </motion.a>
         </motion.div>
 
