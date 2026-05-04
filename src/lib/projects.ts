@@ -22,7 +22,7 @@ export const projects: Project[] = [
     role: "Full Stack Developer",
     description:
       "Contributed to the development of a fullstack caregiver booking platform delivering personalized activities for elderly care.",
-    image: "/coding-background.jpg",
+    image: "/geriatric-care-solution.png",
     tags: ["Next.js", "React", "Full Stack", "AI Integration", "Tailwind CSS"],
     demo: "https://www.geriatriccaresolution.com",
     category: "software",
@@ -49,7 +49,7 @@ export const projects: Project[] = [
     role: "Full Stack Developer",
     description:
       "Developed a secure web-based system with login enabling healthcare personnel to manage hospital-to-hospital patient referrals.",
-    image: "/coding-background.jpg",
+    image: "/e-referral.jpg",
     tags: [
       "Full Stack",
       "Authentication",
@@ -80,7 +80,7 @@ export const projects: Project[] = [
     role: "Frontend Developer",
     description:
       "Designed and developed an intuitive user interface for seamless payment processing, ensuring a responsive and user-friendly experience across devices. Implemented static payment status updates for design and user-experience.",
-    image: "/coding-background.jpg",
+    image: "/payment-system.png",
     tags: ["React", "Frontend", "UI/UX", "Responsive Design", "Tailwind CSS"],
     category: "software",
     period: "Nov 2024",
@@ -92,7 +92,7 @@ export const projects: Project[] = [
     role: "Mobile Application Frontend Developer",
     description:
       "Implemented the Profile, Booking, and Wallet Screens for the Gym App using the React Native framework and Expo for production.",
-    image: "/about-me_coding.jpg",
+    image: "/brite.jpg",
     tags: ["React Native", "Expo", "Mobile App", "Frontend"],
     category: "software",
     period: "Jun 2024 – Aug 2024",
