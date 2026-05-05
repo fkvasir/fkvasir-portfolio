@@ -68,8 +68,9 @@ export const projects: Project[] = [
     role: "Full Stack Developer",
     description:
       "Designed and implemented a user-friendly application to track income and expenses. Ensured secure data management with encryption and authentication features.",
-    image: "/about-me_coding.jpg",
+    image: "/income-expense-tracker.png",
     tags: ["Full Stack", "Authentication", "Encryption", "MySQL"],
+    demo: "https://fkvasir-income-expense-tracker.vercel.app",
     category: "software",
     period: "Nov 2024 – Jan 2025",
   },
