@@ -1,57 +1,118 @@
-import React from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { FaLock } from "react-icons/fa";
+import { FaLock, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { projects, type Project } from "@/lib/projects";
 
-const ProjectCard = ({ project }: { project: Project }) => (
-  <div className="group relative w-72 shrink-0 bg-bg2 border border-zinc-700 rounded-lg overflow-hidden hover:border-brand1/50 transition-colors duration-300 flex flex-col">
-    <div className="h-40 relative">
-      <Image
-        src={project.image}
-        alt={project.title}
-        fill
-        sizes="288px"
-        className="object-cover"
-      />
-      {project.private && (
-        <div className="absolute top-2 right-2 z-10 flex items-center gap-1 px-2 py-1 rounded bg-black/70 border border-brand1/40 text-brand1 text-xs backdrop-blur-sm">
-          <FaLock size={9} />
-          <span>NDA</span>
+const AUTOPLAY_MS = 4000;
+const CARD_WIDTH = 320;
+const PITCH_DESKTOP = 320;
+const PITCH_MOBILE = 240;
+
+const ProjectCard = ({
+  project,
+  isCenter,
+}: {
+  project: Project;
+  isCenter: boolean;
+}) => {
+  const ringClass = isCenter
+    ? "ring-2 ring-brand1/50 shadow-xl shadow-brand1/20 border-brand1/40"
+    : "border-zinc-700";
+
+  return (
+    <div
+      className={`group relative w-80 bg-bg2 border ${ringClass} rounded-lg overflow-hidden flex flex-col transition-colors`}
+      style={{ width: CARD_WIDTH }}
+    >
+      <div className="h-52 relative">
+        <Image
+          src={project.image}
+          alt={project.title}
+          fill
+          sizes="320px"
+          className="object-cover"
+        />
+        {project.private && (
+          <div className="absolute top-2 right-2 z-10 flex items-center gap-1 px-2 py-1 rounded bg-black/70 border border-brand1/40 text-brand1 text-xs backdrop-blur-sm">
+            <FaLock size={9} />
+            <span>NDA</span>
+          </div>
+        )}
+      </div>
+      <div className="p-5 flex flex-col flex-grow">
+        <h3 className="text-white font-semibold text-base leading-snug mb-1 line-clamp-2">
+          {project.title}
+        </h3>
+        {project.company && (
+          <p className="text-brand2 text-sm">{project.company}</p>
+        )}
+        {project.period && (
+          <p className="text-brand1 text-xs mt-1">{project.period}</p>
+        )}
+        <div className="flex flex-wrap gap-1 mt-3">
+          {project.tags.slice(0, 3).map((tag, i) => (
+            <span
+              key={i}
+              className="px-2 py-0.5 text-xs bg-brand1/10 text-brand1 rounded border border-brand1/30"
+            >
+              {tag}
+            </span>
+          ))}
         </div>
-      )}
-    </div>
-    <div className="p-4 flex flex-col flex-grow">
-      <h3 className="text-white font-semibold text-sm leading-snug mb-1 line-clamp-2">
-        {project.title}
-      </h3>
-      {project.company && (
-        <p className="text-brand2 text-xs">{project.company}</p>
-      )}
-      {project.period && (
-        <p className="text-brand1 text-[10px] mt-1">{project.period}</p>
-      )}
-      <div className="flex flex-wrap gap-1 mt-3">
-        {project.tags.slice(0, 3).map((tag, i) => (
-          <span
-            key={i}
-            className="px-2 py-0.5 text-[10px] bg-brand1/10 text-brand1 rounded border border-brand1/30"
-          >
-            {tag}
-          </span>
-        ))}
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const ProjectsSection = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
+
+  const reduceMotion = useReducedMotion();
+  const N = projects.length;
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [pitch, setPitch] = useState(PITCH_DESKTOP);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(max-width: 767px)");
+    const update = () =>
+      setPitch(mq.matches ? PITCH_MOBILE : PITCH_DESKTOP);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  const startAutoplay = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      setActiveIndex((i) => (i + 1) % N);
+    }, AUTOPLAY_MS);
+  }, [N]);
+
+  useEffect(() => {
+    startAutoplay();
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [startAutoplay]);
+
+  const goTo = (i: number) => {
+    setActiveIndex(((i % N) + N) % N);
+    startAutoplay();
+  };
+  const next = () => goTo(activeIndex + 1);
+  const prev = () => goTo(activeIndex - 1);
+
+  const transition = reduceMotion
+    ? { duration: 0 }
+    : { duration: 0.6, ease: [0.32, 0.72, 0, 1] as const };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -69,10 +130,6 @@ const ProjectsSection = () => {
     hidden: { y: 50, opacity: 0 },
     visible: { y: 0, opacity: 1 },
   };
-
-  // Duplicate the list so the marquee loops seamlessly when the first copy
-  // finishes scrolling out (-50% lands exactly on the start of the duplicate).
-  const marqueeProjects = [...projects, ...projects];
 
   return (
     <motion.section
@@ -125,21 +182,76 @@ const ProjectsSection = () => {
         </motion.p>
       </motion.div>
 
-      {/* Auto-scrolling marquee carousel */}
+      {/* Sliding 3-card showcase carousel */}
       <motion.div
         variants={itemVariants}
-        className="relative max-w-7xl mx-auto"
+        className="relative max-w-6xl mx-auto px-4 md:px-12"
       >
-        {/* Edge fade masks so cards visually melt at the rails */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-16 z-10 bg-gradient-to-r from-bg1 to-transparent" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-16 z-10 bg-gradient-to-l from-bg1 to-transparent" />
+        <div className="relative h-[28rem] md:h-[30rem] overflow-hidden">
+          {projects.map((p, i) => {
+            let offset = i - activeIndex;
+            if (offset > N / 2) offset -= N;
+            if (offset < -N / 2) offset += N;
 
-        <div className="overflow-hidden">
-          <div className="flex gap-6 w-max animate-marquee">
-            {marqueeProjects.map((project, i) => (
-              <ProjectCard key={`${project.id}-${i}`} project={project} />
-            ))}
-          </div>
+            const isCenter = offset === 0;
+            const isAdjacent = Math.abs(offset) === 1;
+            const visible = isCenter || isAdjacent;
+
+            return (
+              <motion.div
+                key={p.id}
+                className="absolute top-1/2 left-1/2"
+                initial={false}
+                animate={{
+                  x: offset * pitch - CARD_WIDTH / 2,
+                  y: "-50%",
+                  scale: isCenter ? 1.1 : 0.82,
+                  opacity: visible ? (isCenter ? 1 : 0.5) : 0,
+                  zIndex: isCenter ? 20 : 10,
+                }}
+                transition={transition}
+                style={{ pointerEvents: visible ? "auto" : "none" }}
+              >
+                <ProjectCard project={p} isCenter={isCenter} />
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Arrow controls */}
+        <button
+          type="button"
+          aria-label="Previous project"
+          onClick={prev}
+          className="absolute top-1/2 -translate-y-1/2 left-0 md:-left-2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-bg2/80 border border-zinc-700 text-white hover:text-brand1 hover:border-brand1/60 hover:bg-bg2 backdrop-blur-sm flex items-center justify-center transition-colors"
+        >
+          <FaChevronLeft size={16} />
+        </button>
+        <button
+          type="button"
+          aria-label="Next project"
+          onClick={next}
+          className="absolute top-1/2 -translate-y-1/2 right-0 md:-right-2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-bg2/80 border border-zinc-700 text-white hover:text-brand1 hover:border-brand1/60 hover:bg-bg2 backdrop-blur-sm flex items-center justify-center transition-colors"
+        >
+          <FaChevronRight size={16} />
+        </button>
+
+        {/* Dot indicators */}
+        <div className="flex items-center justify-center gap-2 mt-4">
+          {projects.map((p, i) => {
+            const active = i === activeIndex;
+            return (
+              <button
+                key={p.id}
+                type="button"
+                aria-label={`Go to project ${i + 1}`}
+                onClick={() => goTo(i)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  active ? "w-6 bg-brand1" : "w-2 bg-zinc-600 hover:bg-zinc-400"
+                }`}
+              />
+            );
+          })}
         </div>
       </motion.div>
 

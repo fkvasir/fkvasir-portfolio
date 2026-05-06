@@ -236,28 +236,33 @@ const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
         <div className="flex-1 space-y-8">
           <motion.div variants={itemVariants}>
             <div className="text-gray-500 font-mono">&lt;h1&gt;</div>
-            <h1 className="text-4xl md:text-5xl font-bold text-white min-h-[180px] md:min-h-[200px]">
-              {displayText.split("\n").map((line, index) => (
-                <span key={index} className="block">
-                  {line.includes("FKVASIR") ? (
-                    <>
-                      {line.split("FKVASIR")[0]}
-                      <span className="text-brand1">FKVASIR</span>
-                      {line.split("FKVASIR")[1]}
-                    </>
-                  ) : (
-                    line
-                  )}
-                  {index < displayText.split("\n").length - 1 && <br />}
-                </span>
-              ))}
-              <motion.span
-                animate={{ opacity: [1, 0, 1] }}
-                transition={{ duration: 1, repeat: Infinity }}
-                className="text-brand1"
-              >
-                |
-              </motion.span>
+            <h1 className="text-4xl md:text-5xl font-bold text-white min-h-[140px] md:min-h-[160px]">
+              {displayText.split("\n").map((line, index, arr) => {
+                const isLastLine = index === arr.length - 1;
+                return (
+                  <span key={index} className="block">
+                    {line.includes("FKVASIR") ? (
+                      <>
+                        {line.split("FKVASIR")[0]}
+                        <span className="text-brand1">FKVASIR</span>
+                        {line.split("FKVASIR")[1]}
+                      </>
+                    ) : (
+                      line
+                    )}
+                    {isLastLine && (
+                      <motion.span
+                        animate={{ opacity: [1, 0, 1] }}
+                        transition={{ duration: 1, repeat: Infinity }}
+                        className="text-brand1 ml-1"
+                      >
+                        |
+                      </motion.span>
+                    )}
+                    {!isLastLine && <br />}
+                  </span>
+                );
+              })}
             </h1>
             <div className="text-gray-500 font-mono">&lt;/h1&gt;</div>
           </motion.div>
