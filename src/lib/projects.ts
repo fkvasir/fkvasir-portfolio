@@ -16,6 +16,36 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    id: 10,
+    title: "AI Daily Living Assistant & Personal Life OS",
+    company: "Personal Project",
+    role: "Full Stack Developer",
+    description:
+      "Full-stack AI productivity suite with eight modules across an AI daily-living toolkit and a Life OS. Features a Gemini-powered recipe generator, weekly meal planner, and weather-aware outfit recommender, plus a Notion-style wiki, goals/finance/health/habit dashboard, and job-application tracker.",
+    image: "/ai-daily-assistant.png",
+    tags: ["Next.js 16", "NestJS", "PostgreSQL", "Prisma", "Gemini API"],
+    demo: "https://ai-daily-assistant.vercel.app",
+    category: "software",
+    period: "May 2026",
+    longDescription:
+      "Developed and deployed a full-stack AI productivity suite using Next.js 16 (App Router, React 19), a NestJS 11 REST API, and PostgreSQL with Prisma in a Turborepo monorepo. Engineered JWT authentication in httpOnly cookies behind a Backend-for-Frontend proxy with role-based admin access and a user-management dashboard. Integrated the Google Gemini API to power a recipe generator, weekly meal planner, and weather-based outfit recommender (keyless Open-Meteo forecast and geocoding), all locale- and timezone-aware. Built a Life OS suite with a Notion-style markdown wiki, a goals/finance/health/habit dashboard, and a job-application tracker. Deployed to Vercel, Render, and Neon with automated Prisma migrations, per-user rate limiting, Dockerized local Postgres, and a polished shadcn/ui + Tailwind CSS interface.",
+  },
+  {
+    id: 11,
+    title: "Nutritionist Meal Plan System (ChefMDRX)",
+    company: "ChefMDRX",
+    role: "Full Stack Developer",
+    description:
+      "Subscription-based nutritionist meal-planning platform where clients complete an assessment and book consultations, with an R&D staff workflow that confirms consultations, assigns meal plans, and dispatches them to the kitchen.",
+    image: "/chefmdrx.png",
+    tags: ["Next.js", "NestJS", "PostgreSQL", "Xendit", "Resend"],
+    demo: "https://chefmdrx-web.vercel.app",
+    category: "software",
+    period: "Apr 2026 – May 2026",
+    longDescription:
+      "Built a subscription-based nutritionist meal-planning platform on a Next.js, NestJS, and PostgreSQL stack where clients fill out an assessment form and book a consultation schedule. Developed the Research & Development staff workflow to confirm consultations, assign each client an appropriate meal plan, and dispatch it to the kitchen for cooking. Integrated Xendit for subscription payments and Resend for transactional email such as booking confirmations and status updates. Implemented free meal-delivery scheduling tied to active subscriptions and assigned meal plans. Deployed the backend on Railway and the frontend on Vercel.",
+  },
+  {
     id: 1,
     title: "Caregiver Booking & Recreational Activity Generator",
     company: "Geriatric Care Solutions",

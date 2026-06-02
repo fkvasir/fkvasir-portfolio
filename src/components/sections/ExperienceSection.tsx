@@ -13,6 +13,22 @@ type Experience = {
 
 const experiences: Experience[] = [
   {
+    title: "AI Daily Living Assistant & Personal Life OS",
+    company: "Personal Project",
+    role: "Full Stack Developer",
+    period: "May 2026",
+    description:
+      "Built and deployed a full-stack AI productivity suite (eight modules across an AI daily-living toolkit and a Life OS) on Next.js 16, NestJS 11, and PostgreSQL/Prisma in a Turborepo monorepo, with Gemini-powered recipe, meal-planning, and weather-aware outfit tools.",
+  },
+  {
+    title: "Nutritionist Meal Plan System",
+    company: "ChefMDRX",
+    role: "Full Stack Developer",
+    period: "Apr 2026 – May 2026",
+    description:
+      "Built a subscription-based nutritionist meal-planning platform on Next.js, NestJS, and PostgreSQL with an R&D consultation-to-kitchen workflow, Xendit subscription payments, Resend transactional email, and free meal-delivery scheduling.",
+  },
+  {
     title: "Caregiver Booking & Recreational Activity Generator",
     company: "Geriatric Care Solutions",
     role: "Full Stack Developer",
