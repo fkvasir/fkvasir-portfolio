@@ -142,23 +142,67 @@ const AboutSection = () => {
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : { opacity: 0 }}
               transition={{ delay: 1.2, duration: 0.8 }}
-              className="mb-4"
+              className="mb-2"
             >
               <span className="text-gray-400">I&apos;m</span>{" "}
               <span className="text-brand1">FKVASIR</span>{" "}
               <span className="text-gray-400">
-                and I specialize in web development, app development, machine
-                learning, deep learning and AI integration in systems that
-                utilizes
-              </span>{" "}
-              <span className="text-brand1">HTML, CSS, JavaScript, Python</span>
-              .
+                — a full-stack developer who builds production platforms end to
+                end:
+              </span>
             </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ delay: 1.4, duration: 0.8 }}
+              className="mb-4 text-gray-400"
+            >
+              <p>
+                <span className="text-brand2">const</span>{" "}
+                <span className="text-brand1">stack</span> = {"{"}
+              </p>
+              <p className="pl-4">
+                frameworks: [
+                <span className="text-brand1">&quot;Next.js&quot;</span>,{" "}
+                <span className="text-brand1">&quot;NestJS&quot;</span>],
+              </p>
+              <p className="pl-4">
+                payments: [
+                <span className="text-brand1">&quot;Stripe&quot;</span>,{" "}
+                <span className="text-brand1">&quot;Xendit&quot;</span>],
+              </p>
+              <p className="pl-4">
+                realtime: [
+                <span className="text-brand1">&quot;Socket.io&quot;</span>,{" "}
+                <span className="text-brand1">&quot;Zendesk chat&quot;</span>],
+              </p>
+              <p className="pl-4">
+                databases: [
+                <span className="text-brand1">&quot;PostgreSQL&quot;</span>,{" "}
+                <span className="text-brand1">&quot;MongoDB Atlas&quot;</span>,{" "}
+                <span className="text-brand1">&quot;NeonDB&quot;</span>],
+              </p>
+              <p className="pl-4">
+                orm: <span className="text-brand1">&quot;Prisma&quot;</span>,
+              </p>
+              <p className="pl-4">
+                hosting: [
+                <span className="text-brand1">&quot;Vercel&quot;</span>,{" "}
+                <span className="text-brand1">&quot;Render&quot;</span>,{" "}
+                <span className="text-brand1">&quot;Railway&quot;</span>],
+              </p>
+              <p className="pl-4">
+                workflow:{" "}
+                <span className="text-brand1">&quot;Git + GitHub&quot;</span>,
+              </p>
+              <p>{"};"}</p>
+            </motion.div>
 
             <motion.p
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ delay: 1.4, duration: 0.8 }}
+              transition={{ delay: 1.6, duration: 0.8 }}
               className="mb-4 text-gray-400"
             >
               I&apos;m passionate about creating intuitive user experiences and
@@ -169,19 +213,21 @@ const AboutSection = () => {
             <motion.p
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ delay: 1.6, duration: 0.8 }}
+              transition={{ delay: 1.8, duration: 0.8 }}
               className="mb-4"
             >
               <span className="text-brand1">When I&apos;m not coding // </span>
               <span className="opacity-80 text-gray-400">
-                you&apos;ll probably find me reading or gaming.
+                you&apos;ll find me up in the mountains — I&apos;m an avid
+                mountain climber, happiest scrambling over rocks toward a
+                summit.
               </span>
             </motion.p>
 
             <motion.p
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ delay: 1.8, duration: 0.8 }}
+              transition={{ delay: 2, duration: 0.8 }}
               className="text-gray-400"
             >
               I&apos;d love to help you achieve your vision, and create systems
@@ -214,11 +260,11 @@ const AboutSection = () => {
                 transition={{ duration: 1.2, ease: "easeOut" }}
               >
                 <Image
-                  src="/me_coding.jpeg"
-                  alt="About me"
+                  src="/about-mountain.jpg"
+                  alt="FKVASIR mountain climbing"
                   width={400}
                   height={300}
-                  className="object-cover w-full h-auto"
+                  className="object-cover w-full aspect-[4/3]"
                 />
               </motion.div>
 
@@ -259,7 +305,7 @@ const AboutSection = () => {
                 }}
                 className="absolute bottom-4 left-4 w-8 h-8 bg-brand1/20 rounded-full flex items-center justify-center border border-brand1/30"
               >
-                <span className="text-brand1 text-xs">⚡</span>
+                <span className="text-brand1 text-xs">🏔️</span>
               </motion.div>
             </motion.div>
 

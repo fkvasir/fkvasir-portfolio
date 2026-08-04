@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaEnvelope, FaDownload } from "react-icons/fa";
+import { FaEnvelope, FaDownload, FaArrowRight } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 interface HomeSectionProps {
@@ -275,9 +275,12 @@ const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
           >
             <div className="text-gray-500 font-mono">&lt;p&gt;</div>
             <p className="text-gray-300 text-lg">
-              I help businesses grow by crafting amazing web experiences. If
-              you&apos;re looking for a developer that likes to get stuff done,
-              let&apos;s talk about your project!
+              I build full-stack platforms end to end — Next.js frontends,
+              NestJS APIs, and PostgreSQL data layers — with the features real
+              businesses need: Stripe and Xendit payments, Socket.io live chat,
+              and dashboards your team will actually use. If you want a
+              developer who ships production software, not just prototypes,
+              let&apos;s talk.
             </p>
             <div className="text-gray-500 font-mono">&lt;/p&gt;</div>
           </motion.div>
@@ -287,20 +290,36 @@ const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 3, duration: 0.6 }}
           >
-            <Link
-              href="#contacts"
-              className="inline-flex items-center gap-2 px-5 py-3 bg-brand1 text-black font-medium rounded-md hover:bg-brand2 transition-colors group"
-            >
-              <motion.span whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
-                Let&apos;s Talk
-              </motion.span>
-              <motion.div
-                whileHover={{ x: 5, rotate: 15 }}
-                transition={{ duration: 0.2 }}
+            <div className="flex flex-wrap gap-4">
+              <Link
+                href="#contacts"
+                className="inline-flex items-center gap-2 px-5 py-3 bg-brand1 text-black font-medium rounded-md hover:bg-brand2 transition-colors group"
               >
-                <FaEnvelope />
-              </motion.div>
-            </Link>
+                <motion.span
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  Let&apos;s Talk
+                </motion.span>
+                <motion.div
+                  whileHover={{ x: 5, rotate: 15 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <FaEnvelope />
+                </motion.div>
+              </Link>
+              <Link
+                href="#projects"
+                className="inline-flex items-center gap-2 px-5 py-3 border-2 border-brand1 text-brand1 font-medium rounded-md hover:bg-brand1/10 transition-colors"
+              >
+                View My Work
+                <FaArrowRight />
+              </Link>
+            </div>
+            <p className="mt-4 text-sm text-gray-400 font-mono">
+              {"// "}When you message me, you talk directly to the developer —
+              no middlemen.
+            </p>
           </motion.div>
 
           {/* Stats */}
@@ -311,9 +330,9 @@ const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
             className="flex flex-col md:flex-row gap-6 mt-10"
           >
             {[
-              { number: "4", label: "Programming\nLanguages" },
-              { number: "6", label: "Development\nTools" },
-              { number: "2", label: "Years of\nExperience" },
+              { number: "11", label: "Projects\nShipped" },
+              { number: "5", label: "Client\nPlatforms" },
+              { number: "2+", label: "Years of\nExperience" },
             ].map((stat, index) => (
               <motion.div
                 key={index}
