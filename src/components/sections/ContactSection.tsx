@@ -133,11 +133,18 @@ const ContactSection = () => {
             Send a Message
           </h3>
           <form
-            action="https://formsubmit.co/lavesoreskvasir@gmail.com"
+            action="https://formsubmit.co/3263afce60802beb0aa69fcb4343799a"
             method="POST"
             className="space-y-6"
           >
             {/* Hidden fields for FormSubmit configuration */}
+            <input
+              type="text"
+              name="_honey"
+              tabIndex={-1}
+              autoComplete="off"
+              style={{ display: "none" }}
+            />
             <input
               type="hidden"
               name="_subject"
