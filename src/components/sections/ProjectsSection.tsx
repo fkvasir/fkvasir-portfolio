@@ -1,8 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { FaLock, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import {
+  FaLock,
+  FaChevronLeft,
+  FaChevronRight,
+  FaExternalLinkAlt,
+  FaGithub,
+  FaTimes,
+} from "react-icons/fa";
 import { projects, type Project } from "@/lib/projects";
 
 const AUTOPLAY_MS = 4000;
@@ -14,10 +21,12 @@ const ProjectCard = ({
   project,
   isCenter,
   variant = "carousel",
+  onDetails,
 }: {
   project: Project;
   isCenter: boolean;
   variant?: "carousel" | "grid";
+  onDetails: () => void;
 }) => {
   const ringClass = isCenter
     ? "ring-2 ring-brand1/50 shadow-xl shadow-brand1/20 border-brand1/40"
@@ -29,7 +38,8 @@ const ProjectCard = ({
 
   return (
     <div
-      className={`group relative w-80 bg-bg2 border ${ringClass} rounded-lg overflow-hidden flex flex-col transition-colors`}
+      onClick={onDetails}
+      className={`group relative w-80 bg-bg2 border ${ringClass} rounded-lg overflow-hidden flex flex-col transition-colors cursor-pointer`}
       style={{ width: CARD_WIDTH }}
     >
       <div className="h-52 relative">
@@ -67,6 +77,42 @@ const ProjectCard = ({
             </span>
           ))}
         </div>
+        <div className="flex items-center gap-2 mt-4">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDetails();
+            }}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-brand1 text-black rounded hover:bg-brand2 hover:text-white transition-colors"
+          >
+            Details
+          </button>
+          {project.demo && (
+            <a
+              href={project.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Visit ${project.title} live site`}
+              onClick={(e) => e.stopPropagation()}
+              className="p-2 text-brand1 border border-brand1/30 rounded hover:bg-brand1/10 transition-colors"
+            >
+              <FaExternalLinkAlt size={12} />
+            </a>
+          )}
+          {project.github && (
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`View ${project.title} on GitHub`}
+              onClick={(e) => e.stopPropagation()}
+              className="p-2 text-brand1 border border-brand1/30 rounded hover:bg-brand1/10 transition-colors"
+            >
+              <FaGithub size={12} />
+            </a>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -82,7 +128,10 @@ const ProjectsSection = () => {
   const N = projects.length;
   const [activeIndex, setActiveIndex] = useState(0);
   const [pitch, setPitch] = useState(PITCH_DESKTOP);
-  const [view, setView] = useState<"carousel" | "circle" | "grid">("carousel");
+  const [view, setView] = useState<"carousel" | "circle" | "vacuum" | "grid">(
+    "carousel"
+  );
+  const [detailProject, setDetailProject] = useState<Project | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const morphTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -127,21 +176,31 @@ const ProjectsSection = () => {
   const next = () => goTo(activeIndex + 1);
   const prev = () => goTo(activeIndex - 1);
 
-  // View all: carousel wraps into a circle, then the circle extracts into a grid
+  // View all: the carousel wraps into a circle, spins, and gets vacuumed into
+  // the middle, then the grid bursts out. Show less reverses through the vacuum.
   const expand = () => {
     if (view !== "carousel") return;
     setView("circle");
     morphTimer.current = setTimeout(
-      () => setView("grid"),
-      reduceMotion ? 0 : 750
+      () => {
+        setView("vacuum");
+        morphTimer.current = setTimeout(
+          () => setView("grid"),
+          reduceMotion ? 0 : 600
+        );
+      },
+      reduceMotion ? 0 : 700
     );
   };
   const collapse = () => {
     if (view !== "grid") return;
-    setView("circle");
+    document
+      .getElementById("projects")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setView("vacuum");
     morphTimer.current = setTimeout(
       () => setView("carousel"),
-      reduceMotion ? 0 : 750
+      reduceMotion ? 0 : 650
     );
   };
 
@@ -223,7 +282,7 @@ const ProjectsSection = () => {
         className="relative max-w-6xl mx-auto px-4 md:px-12"
       >
         {view !== "grid" ? (
-          <div className="relative h-[28rem] md:h-[30rem] overflow-hidden">
+          <div className="relative h-[30rem] md:h-[32rem] overflow-hidden">
             {projects.map((p, i) => {
               let offset = i - activeIndex;
               if (offset > N / 2) offset -= N;
@@ -233,27 +292,47 @@ const ProjectsSection = () => {
               const isAdjacent = Math.abs(offset) === 1;
               const visible = isCenter || isAdjacent;
 
-              // Circle formation targets — cards wrap into a ring before the grid
+              // Ring formation targets — cards wrap into a circle, spin, and
+              // get vacuumed into the middle
               const inCircle = view === "circle";
+              const inVacuum = view === "vacuum";
               const angle = (i / N) * Math.PI * 2 - Math.PI / 2;
               const rx = pitch === PITCH_MOBILE ? 120 : 250;
               const ry = pitch === PITCH_MOBILE ? 110 : 130;
+              const circlePos = {
+                x: Math.cos(angle) * rx - CARD_WIDTH / 2,
+                y: Math.sin(angle) * ry,
+                scale: 0.35,
+                opacity: 1,
+                rotate: 0,
+                zIndex: 10,
+              };
 
-              const target = inCircle
+              const target = inVacuum
                 ? {
-                    x: Math.cos(angle) * rx - CARD_WIDTH / 2,
-                    y: Math.sin(angle) * ry,
-                    scale: 0.35,
-                    opacity: 1,
+                    x: -CARD_WIDTH / 2,
+                    y: 0,
+                    scale: 0.05,
+                    opacity: 0,
+                    rotate: 480,
                     zIndex: 10,
                   }
+                : inCircle
+                ? circlePos
                 : {
                     x: offset * pitch - CARD_WIDTH / 2,
                     y: 0,
                     scale: isCenter ? 1.1 : 0.82,
                     opacity: visible ? (isCenter ? 1 : 0.5) : 0,
+                    rotate: 0,
                     zIndex: isCenter ? 20 : 10,
                   };
+
+              const morphTransition = inVacuum
+                ? reduceMotion
+                  ? { duration: 0 }
+                  : { duration: 0.55, ease: "easeIn" as const }
+                : transition;
 
               return (
                 <div
@@ -262,25 +341,18 @@ const ProjectsSection = () => {
                   style={{ transform: "translateY(-50%)" }}
                 >
                   <motion.div
-                    initial={
-                      inCircle
-                        ? {
-                            x: -CARD_WIDTH / 2,
-                            y: 0,
-                            scale: 0.2,
-                            opacity: 0,
-                          }
-                        : false
-                    }
+                    initial={inVacuum || inCircle ? circlePos : false}
                     animate={target}
-                    transition={transition}
+                    transition={morphTransition}
                     style={{
-                      pointerEvents: inCircle || visible ? "auto" : "none",
+                      pointerEvents:
+                        view === "carousel" && visible ? "auto" : "none",
                     }}
                   >
                     <ProjectCard
                       project={p}
-                      isCenter={!inCircle && isCenter}
+                      isCenter={view === "carousel" && isCenter}
+                      onDetails={() => setDetailProject(p)}
                     />
                   </motion.div>
                 </div>
@@ -292,15 +364,20 @@ const ProjectsSection = () => {
             {projects.map((p, i) => (
               <motion.div
                 key={p.id}
-                initial={{ opacity: 0, scale: 0.3, y: -40 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
+                initial={{ opacity: 0, scale: 0.2, rotate: -120 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
                 transition={{
-                  delay: reduceMotion ? 0 : i * 0.06,
+                  delay: reduceMotion ? 0 : i * 0.05,
                   duration: reduceMotion ? 0 : 0.5,
                   ease: [0.32, 0.72, 0, 1],
                 }}
               >
-                <ProjectCard project={p} isCenter={false} variant="grid" />
+                <ProjectCard
+                  project={p}
+                  isCenter={false}
+                  variant="grid"
+                  onDetails={() => setDetailProject(p)}
+                />
               </motion.div>
             ))}
           </div>
@@ -354,7 +431,7 @@ const ProjectsSection = () => {
         <button
           type="button"
           onClick={view === "grid" ? collapse : expand}
-          disabled={view === "circle"}
+          disabled={view === "circle" || view === "vacuum"}
           className="inline-flex items-center gap-2 px-5 py-2 bg-brand1 text-black font-medium rounded-md hover:bg-brand2 transition-colors disabled:opacity-60"
         >
           {view === "grid" ? (
@@ -368,6 +445,119 @@ const ProjectsSection = () => {
           )}
         </button>
       </div>
+
+      {/* Project details dialog — card spins to the front, reverses on close */}
+      <AnimatePresence>
+        {detailProject && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={() => setDetailProject(null)}
+            className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+            style={{ perspective: 1200 }}
+          >
+            <motion.div
+              initial={{ rotateY: 180, scale: 0.5, opacity: 0 }}
+              animate={{ rotateY: 0, scale: 1, opacity: 1 }}
+              exit={{ rotateY: -180, scale: 0.5, opacity: 0 }}
+              transition={{
+                duration: reduceMotion ? 0 : 0.6,
+                ease: [0.32, 0.72, 0, 1],
+              }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto bg-bg2 border border-brand1/40 rounded-xl shadow-2xl"
+            >
+              <button
+                type="button"
+                aria-label="Close details"
+                onClick={() => setDetailProject(null)}
+                className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-black/60 border border-brand1/40 text-brand1 hover:bg-brand1 hover:text-black transition-colors flex items-center justify-center"
+              >
+                <FaTimes size={14} />
+              </button>
+
+              <div className="h-56 md:h-72 relative">
+                <Image
+                  src={detailProject.image}
+                  alt={detailProject.title}
+                  fill
+                  sizes="672px"
+                  className="object-cover rounded-t-xl"
+                />
+                {detailProject.private && (
+                  <div className="absolute top-3 left-3 flex items-center gap-1 px-2 py-1 rounded bg-black/70 border border-brand1/40 text-brand1 text-xs backdrop-blur-sm">
+                    <FaLock size={9} />
+                    <span>Private — NDA</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="p-6">
+                <h3 className="text-white text-2xl font-bold leading-snug">
+                  {detailProject.title}
+                </h3>
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-sm">
+                  {detailProject.company && (
+                    <span className="text-brand2">{detailProject.company}</span>
+                  )}
+                  {detailProject.role && (
+                    <span className="text-gray-400 italic">
+                      {detailProject.role}
+                    </span>
+                  )}
+                  {detailProject.period && (
+                    <span className="text-brand1 text-xs border border-brand1/30 bg-brand1/10 px-2 py-0.5 rounded">
+                      {detailProject.period}
+                    </span>
+                  )}
+                </div>
+
+                <p className="text-gray-300 mt-4 leading-relaxed">
+                  {detailProject.longDescription ?? detailProject.description}
+                </p>
+
+                <div className="flex flex-wrap gap-1.5 mt-4">
+                  {detailProject.tags.map((tag, i) => (
+                    <span
+                      key={i}
+                      className="px-2 py-0.5 text-xs bg-brand1/10 text-brand1 rounded border border-brand1/30"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {(detailProject.demo || detailProject.github) && (
+                  <div className="flex flex-wrap gap-3 mt-6">
+                    {detailProject.demo && (
+                      <a
+                        href={detailProject.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-brand1 text-black text-sm font-medium rounded-md hover:bg-brand2 hover:text-white transition-colors"
+                      >
+                        Live Site <FaExternalLinkAlt size={12} />
+                      </a>
+                    )}
+                    {detailProject.github && (
+                      <a
+                        href={detailProject.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 border-2 border-brand1 text-brand1 text-sm font-medium rounded-md hover:bg-brand1/10 transition-colors"
+                      >
+                        GitHub <FaGithub size={12} />
+                      </a>
+                    )}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.section>
   );
 };

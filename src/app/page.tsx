@@ -5,7 +5,6 @@ import Logo from "@/components/logo";
 import Link from "next/link";
 import LazySection from "@/components/LazySection";
 import { motion } from "framer-motion";
-import { FaSun, FaMoon } from "react-icons/fa";
 
 // Import section components without dynamic loading
 import HomeSection from "@/components/sections/HomeSection";
@@ -22,7 +21,6 @@ function Home() {
   const [activeSection, setActiveSection] = useState("home");
   const [profileImageKey, setProfileImageKey] = useState(1);
   const [scrolled, setScrolled] = useState(false);
-  const [nightMode, setNightMode] = useState(true);
 
   useEffect(() => {
     // This will force a refresh of the image on the client side only
@@ -30,7 +28,8 @@ function Home() {
 
     // Function to handle scroll events and update active section
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+      // Hysteresis: expand past 80px, contract under 20px — no flicker at the boundary
+      setScrolled((prev) => (prev ? window.scrollY > 20 : window.scrollY > 80));
       const sections = document.querySelectorAll("section[id], div[id]");
       const scrollPosition = window.scrollY + 100; // Added offset for fixed header
 
@@ -45,6 +44,10 @@ function Home() {
           sectionId
         ) {
           setActiveSection(sectionId);
+          // Keep the URL hash in sync while scrolling (no history spam, no jump)
+          if (window.location.hash !== `#${sectionId}`) {
+            window.history.replaceState(null, "", `#${sectionId}`);
+          }
         }
       });
     };
@@ -67,10 +70,10 @@ function Home() {
   return (
     <div>
       <header
-        className={`fixed z-50 py-3 bg-bg1/90 backdrop-blur-md shadow-lg transition-all duration-300 ${
+        className={`fixed left-1/2 -translate-x-1/2 z-50 py-3 px-4 md:px-8 bg-bg1/90 backdrop-blur-md shadow-lg border border-brand1/40 transition-[top,width,max-width,border-radius] duration-500 ease-in-out ${
           scrolled
-            ? "top-0 left-0 translate-x-0 w-full max-w-none rounded-none border-b-2 border-brand1 px-4 md:px-12"
-            : "top-4 left-1/2 -translate-x-1/2 w-[94%] max-w-6xl rounded-2xl border border-brand1/40 px-4 md:px-8"
+            ? "top-0 w-full max-w-[120rem] rounded-none"
+            : "top-4 w-[94%] max-w-6xl rounded-2xl"
         }`}
       >
         <div className="flex flex-col md:flex-row justify-between items-center w-full">
@@ -106,34 +109,6 @@ function Home() {
                 </li>
               ))}
             </ul>
-            {/* Night mode toggle — moon slides out, sun rises in */}
-            <button
-              type="button"
-              aria-label="Toggle night mode"
-              onClick={() => setNightMode((n) => !n)}
-              className="relative w-10 h-10 flex-none rounded-full border border-brand1/40 bg-bg2/60 overflow-hidden hover:border-brand1 transition-colors"
-            >
-              <motion.span
-                initial={false}
-                animate={
-                  nightMode ? { y: 0, opacity: 1 } : { y: -20, opacity: 0 }
-                }
-                transition={{ duration: 0.3 }}
-                className="absolute inset-0 flex items-center justify-center text-brand2"
-              >
-                <FaMoon size={15} />
-              </motion.span>
-              <motion.span
-                initial={false}
-                animate={
-                  nightMode ? { y: 20, opacity: 0 } : { y: 0, opacity: 1 }
-                }
-                transition={{ duration: 0.3 }}
-                className="absolute inset-0 flex items-center justify-center text-brand1"
-              >
-                <FaSun size={15} />
-              </motion.span>
-            </button>
           </nav>
         </div>
       </header>
@@ -144,7 +119,7 @@ function Home() {
         <LazySection
           id="home"
           component={HomeSection}
-          props={{ profileImageKey, nightMode }}
+          props={{ profileImageKey }}
         />
         <LazySection id="services" component={ServicesSection} />
         <LazySection id="about" component={AboutSection} />

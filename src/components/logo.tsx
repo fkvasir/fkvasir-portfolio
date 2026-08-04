@@ -8,7 +8,7 @@ interface LogoProps {
 export default function Logo({ className }: LogoProps) {
   return (
     <Image
-      src="/my_logo.png"
+      src="/fkvasir-crest.png"
       alt="FKVASIR Logo"
       width={40}
       height={40}

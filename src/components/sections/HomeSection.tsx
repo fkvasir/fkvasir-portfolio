@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaEnvelope, FaDownload, FaArrowRight } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface HomeSectionProps {
   profileImageKey: number;
-  nightMode?: boolean;
 }
 
 // Deterministic star field — no Math.random so positions are stable across renders
@@ -27,10 +26,7 @@ const STARS = [
   { top: "41%", left: "5%", size: 2, duration: 3.0, delay: 1.8 },
 ];
 
-const HomeSection: React.FC<HomeSectionProps> = ({
-  profileImageKey,
-  nightMode = true,
-}) => {
+const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
   const [displayText, setDisplayText] = useState("");
   const fullText = "Hey\nI'm FKVASIR,\nFull-Stack Developer";
 
@@ -127,17 +123,13 @@ const HomeSection: React.FC<HomeSectionProps> = ({
           className="absolute -bottom-40 -left-40 w-96 h-96 bg-brand2 rounded-full blur-3xl"
         />
 
-        {/* Night sky — stars, moon, shooting star (toggled from the nav) */}
-        <AnimatePresence>
-          {nightMode && (
-            <motion.div
-              key="night-sky"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8 }}
-              className="absolute inset-0"
-            >
+        {/* Night sky — stars, moon, shooting star */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="absolute inset-0"
+        >
               {STARS.map((star, i) => (
                 <motion.span
                   key={i}
@@ -192,27 +184,19 @@ const HomeSection: React.FC<HomeSectionProps> = ({
                   ease: "easeOut",
                 }}
               />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        </motion.div>
 
-        {/* Pine treeline silhouettes */}
-        <svg
-          viewBox="0 0 1440 140"
-          preserveAspectRatio="none"
+        {/* Pine treeline — Oak Harbor trees graphic, tiled across the bottom */}
+        <div
           aria-hidden="true"
-          className="absolute bottom-0 left-0 w-full h-24 md:h-36 pointer-events-none"
-        >
-          <path
-            d="M0 140 L0 95 L60 95 L95 55 L130 95 L180 95 L215 62 L250 95 L310 95 L350 48 L390 95 L450 95 L485 60 L520 95 L580 95 L620 42 L660 95 L720 95 L755 58 L790 95 L850 95 L890 50 L930 95 L990 95 L1025 62 L1060 95 L1120 95 L1160 45 L1200 95 L1260 95 L1295 58 L1330 95 L1390 95 L1415 70 L1440 95 L1440 140 Z"
-            fill="#2A1548"
-            opacity="0.8"
-          />
-          <path
-            d="M0 140 L0 105 L40 105 L70 35 L100 105 L140 105 L165 60 L190 105 L240 105 L275 25 L310 105 L360 105 L385 55 L410 105 L460 105 L495 30 L530 105 L585 105 L610 58 L635 105 L690 105 L725 22 L760 105 L815 105 L840 55 L865 105 L920 105 L955 28 L990 105 L1045 105 L1070 60 L1095 105 L1150 105 L1185 25 L1220 105 L1275 105 L1300 55 L1325 105 L1380 105 L1410 38 L1440 105 L1440 140 Z"
-            fill="#050308"
-          />
-        </svg>
+          className="absolute bottom-0 left-0 w-full h-24 md:h-32 pointer-events-none"
+          style={{
+            backgroundImage: "url(/trees-m.webp)",
+            backgroundRepeat: "repeat-x",
+            backgroundSize: "auto 100%",
+            backgroundPosition: "bottom left",
+          }}
+        />
       </div>
 
       <motion.div
