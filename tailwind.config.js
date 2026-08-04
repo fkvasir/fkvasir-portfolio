@@ -13,11 +13,11 @@ module.exports = {
   			'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))'
   		},
   		colors: {
-  			bg1: '#292F36',
-  			bg2: '#1A1E23',
+  			bg1: '#1A1226',
+  			bg2: '#0B0910',
   			grey: '#43454D',
-  			brand1: '#12F7D6',
-  			brand2: '#98FAEC',
+  			brand1: '#CFB53B',
+  			brand2: '#9966CC',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

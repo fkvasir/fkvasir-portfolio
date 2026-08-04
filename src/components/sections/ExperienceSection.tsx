@@ -123,7 +123,7 @@ const ExperienceCard = ({
       transition={{ duration: 0.6, delay: 0.4 + index * 0.15 }}
       whileHover={{
         y: -6,
-        boxShadow: "0 20px 40px rgba(18, 247, 214, 0.15)",
+        boxShadow: "0 20px 40px rgba(120, 81, 169, 0.35)",
         transition: { duration: 0.3 },
       }}
       className="bg-zinc-800/80 backdrop-blur rounded-lg border border-zinc-700 hover:border-brand1/50 p-6 transition-colors duration-300"
@@ -173,7 +173,7 @@ const ZigzagArrow = ({
         <motion.path
           d={path}
           fill="none"
-          stroke="#12F7D6"
+          stroke="#7851A9"
           strokeWidth="2"
           strokeLinecap="round"
           strokeDasharray="6 6"
@@ -192,7 +192,7 @@ const ZigzagArrow = ({
         >
           <polygon
             points="0,-6 12,0 0,6"
-            fill="#12F7D6"
+            fill="#7851A9"
             transform={`translate(${arrowX}, ${arrowY}) rotate(${arrowRotation})`}
           />
         </motion.g>

@@ -105,7 +105,7 @@ const AboutSection = () => {
           <motion.span
             whileHover={{
               scale: 1.05,
-              boxShadow: "0 0 20px rgba(18, 247, 214, 0.3)",
+              boxShadow: "0 0 20px rgba(207, 181, 59, 0.3)",
             }}
             className="inline-block border-2 border-brand1 px-6 py-2 rounded-full text-xl text-brand1 font-medium cursor-pointer transition-all duration-300"
           >

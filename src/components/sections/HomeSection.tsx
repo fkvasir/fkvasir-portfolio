@@ -206,7 +206,7 @@ const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
                 transition={{ delay: 1 + index * 0.1, duration: 0.3 }}
                 whileHover={{
                   scale: 1.1,
-                  backgroundColor: "#98FAEC",
+                  backgroundColor: "#9966CC",
                   transition: { duration: 0.2 },
                 }}
                 className="px-2 py-1 text-xs bg-brand1 text-black rounded cursor-pointer"
@@ -220,7 +220,7 @@ const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
             variants={itemVariants}
             whileHover={{
               scale: 1.05,
-              boxShadow: "0 10px 25px rgba(18, 247, 214, 0.3)",
+              boxShadow: "0 10px 25px rgba(120, 81, 169, 0.4)",
             }}
             whileTap={{ scale: 0.95 }}
             href="/resume.pdf"
@@ -339,8 +339,8 @@ const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
                 variants={itemVariants}
                 whileHover={{
                   scale: 1.05,
-                  backgroundColor: "rgba(18, 247, 214, 0.1)",
-                  borderColor: "rgba(18, 247, 214, 0.3)",
+                  backgroundColor: "rgba(120, 81, 169, 0.15)",
+                  borderColor: "rgba(120, 81, 169, 0.4)",
                 }}
                 className="flex items-center gap-4 bg-zinc-800/50 p-4 rounded-lg border border-transparent transition-all duration-300"
               >
