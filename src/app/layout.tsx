@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: "FKVASIR",
   description: "Portfolio of fkvasir",
   icons: {
-    icon: "/my_logo.png",
+    icon: "/fkvasir-crest.png",
   },
 };
 

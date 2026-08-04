@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FaLock, FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -14,13 +13,19 @@ const PITCH_MOBILE = 240;
 const ProjectCard = ({
   project,
   isCenter,
+  variant = "carousel",
 }: {
   project: Project;
   isCenter: boolean;
+  variant?: "carousel" | "grid";
 }) => {
   const ringClass = isCenter
     ? "ring-2 ring-brand1/50 shadow-xl shadow-brand1/20 border-brand1/40"
     : "border-zinc-700";
+  const imgSrc =
+    variant === "grid"
+      ? project.image
+      : project.carouselImage ?? project.image;
 
   return (
     <div
@@ -29,7 +34,7 @@ const ProjectCard = ({
     >
       <div className="h-52 relative">
         <Image
-          src={project.image}
+          src={imgSrc}
           alt={project.title}
           fill
           sizes="320px"
@@ -77,7 +82,9 @@ const ProjectsSection = () => {
   const N = projects.length;
   const [activeIndex, setActiveIndex] = useState(0);
   const [pitch, setPitch] = useState(PITCH_DESKTOP);
+  const [view, setView] = useState<"carousel" | "circle" | "grid">("carousel");
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const morphTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -97,11 +104,21 @@ const ProjectsSection = () => {
   }, [N]);
 
   useEffect(() => {
-    startAutoplay();
+    if (view === "carousel") {
+      startAutoplay();
+    } else if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [startAutoplay]);
+  }, [startAutoplay, view]);
+
+  useEffect(() => {
+    return () => {
+      if (morphTimer.current) clearTimeout(morphTimer.current);
+    };
+  }, []);
 
   const goTo = (i: number) => {
     setActiveIndex(((i % N) + N) % N);
@@ -109,6 +126,24 @@ const ProjectsSection = () => {
   };
   const next = () => goTo(activeIndex + 1);
   const prev = () => goTo(activeIndex - 1);
+
+  // View all: carousel wraps into a circle, then the circle extracts into a grid
+  const expand = () => {
+    if (view !== "carousel") return;
+    setView("circle");
+    morphTimer.current = setTimeout(
+      () => setView("grid"),
+      reduceMotion ? 0 : 750
+    );
+  };
+  const collapse = () => {
+    if (view !== "grid") return;
+    setView("circle");
+    morphTimer.current = setTimeout(
+      () => setView("carousel"),
+      reduceMotion ? 0 : 750
+    );
+  };
 
   const transition = reduceMotion
     ? { duration: 0 }
@@ -187,82 +222,151 @@ const ProjectsSection = () => {
         variants={itemVariants}
         className="relative max-w-6xl mx-auto px-4 md:px-12"
       >
-        <div className="relative h-[28rem] md:h-[30rem] overflow-hidden">
-          {projects.map((p, i) => {
-            let offset = i - activeIndex;
-            if (offset > N / 2) offset -= N;
-            if (offset < -N / 2) offset += N;
+        {view !== "grid" ? (
+          <div className="relative h-[28rem] md:h-[30rem] overflow-hidden">
+            {projects.map((p, i) => {
+              let offset = i - activeIndex;
+              if (offset > N / 2) offset -= N;
+              if (offset < -N / 2) offset += N;
 
-            const isCenter = offset === 0;
-            const isAdjacent = Math.abs(offset) === 1;
-            const visible = isCenter || isAdjacent;
+              const isCenter = offset === 0;
+              const isAdjacent = Math.abs(offset) === 1;
+              const visible = isCenter || isAdjacent;
 
-            return (
+              // Circle formation targets — cards wrap into a ring before the grid
+              const inCircle = view === "circle";
+              const angle = (i / N) * Math.PI * 2 - Math.PI / 2;
+              const rx = pitch === PITCH_MOBILE ? 120 : 250;
+              const ry = pitch === PITCH_MOBILE ? 110 : 130;
+
+              const target = inCircle
+                ? {
+                    x: Math.cos(angle) * rx - CARD_WIDTH / 2,
+                    y: Math.sin(angle) * ry,
+                    scale: 0.35,
+                    opacity: 1,
+                    zIndex: 10,
+                  }
+                : {
+                    x: offset * pitch - CARD_WIDTH / 2,
+                    y: 0,
+                    scale: isCenter ? 1.1 : 0.82,
+                    opacity: visible ? (isCenter ? 1 : 0.5) : 0,
+                    zIndex: isCenter ? 20 : 10,
+                  };
+
+              return (
+                <div
+                  key={p.id}
+                  className="absolute top-1/2 left-1/2"
+                  style={{ transform: "translateY(-50%)" }}
+                >
+                  <motion.div
+                    initial={
+                      inCircle
+                        ? {
+                            x: -CARD_WIDTH / 2,
+                            y: 0,
+                            scale: 0.2,
+                            opacity: 0,
+                          }
+                        : false
+                    }
+                    animate={target}
+                    transition={transition}
+                    style={{
+                      pointerEvents: inCircle || visible ? "auto" : "none",
+                    }}
+                  >
+                    <ProjectCard
+                      project={p}
+                      isCenter={!inCircle && isCenter}
+                    />
+                  </motion.div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+            {projects.map((p, i) => (
               <motion.div
                 key={p.id}
-                className="absolute top-1/2 left-1/2"
-                initial={false}
-                animate={{
-                  x: offset * pitch - CARD_WIDTH / 2,
-                  y: "-50%",
-                  scale: isCenter ? 1.1 : 0.82,
-                  opacity: visible ? (isCenter ? 1 : 0.5) : 0,
-                  zIndex: isCenter ? 20 : 10,
+                initial={{ opacity: 0, scale: 0.3, y: -40 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{
+                  delay: reduceMotion ? 0 : i * 0.06,
+                  duration: reduceMotion ? 0 : 0.5,
+                  ease: [0.32, 0.72, 0, 1],
                 }}
-                transition={transition}
-                style={{ pointerEvents: visible ? "auto" : "none" }}
               >
-                <ProjectCard project={p} isCenter={isCenter} />
+                <ProjectCard project={p} isCenter={false} variant="grid" />
               </motion.div>
-            );
-          })}
-        </div>
+            ))}
+          </div>
+        )}
 
-        {/* Arrow controls */}
-        <button
-          type="button"
-          aria-label="Previous project"
-          onClick={prev}
-          className="absolute top-1/2 -translate-y-1/2 left-0 md:-left-2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-bg2/80 border border-zinc-700 text-white hover:text-brand1 hover:border-brand1/60 hover:bg-bg2 backdrop-blur-sm flex items-center justify-center transition-colors"
-        >
-          <FaChevronLeft size={16} />
-        </button>
-        <button
-          type="button"
-          aria-label="Next project"
-          onClick={next}
-          className="absolute top-1/2 -translate-y-1/2 right-0 md:-right-2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-bg2/80 border border-zinc-700 text-white hover:text-brand1 hover:border-brand1/60 hover:bg-bg2 backdrop-blur-sm flex items-center justify-center transition-colors"
-        >
-          <FaChevronRight size={16} />
-        </button>
+        {view === "carousel" && (
+          <>
+            {/* Arrow controls */}
+            <button
+              type="button"
+              aria-label="Previous project"
+              onClick={prev}
+              className="absolute top-1/2 -translate-y-1/2 left-0 md:-left-2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-bg2/80 border border-zinc-700 text-white hover:text-brand1 hover:border-brand1/60 hover:bg-bg2 backdrop-blur-sm flex items-center justify-center transition-colors"
+            >
+              <FaChevronLeft size={16} />
+            </button>
+            <button
+              type="button"
+              aria-label="Next project"
+              onClick={next}
+              className="absolute top-1/2 -translate-y-1/2 right-0 md:-right-2 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-bg2/80 border border-zinc-700 text-white hover:text-brand1 hover:border-brand1/60 hover:bg-bg2 backdrop-blur-sm flex items-center justify-center transition-colors"
+            >
+              <FaChevronRight size={16} />
+            </button>
 
-        {/* Dot indicators */}
-        <div className="flex items-center justify-center gap-2 mt-4">
-          {projects.map((p, i) => {
-            const active = i === activeIndex;
-            return (
-              <button
-                key={p.id}
-                type="button"
-                aria-label={`Go to project ${i + 1}`}
-                onClick={() => goTo(i)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  active ? "w-6 bg-brand1" : "w-2 bg-zinc-600 hover:bg-zinc-400"
-                }`}
-              />
-            );
-          })}
-        </div>
+            {/* Dot indicators */}
+            <div className="flex items-center justify-center gap-2 mt-4">
+              {projects.map((p, i) => {
+                const active = i === activeIndex;
+                return (
+                  <button
+                    key={p.id}
+                    type="button"
+                    aria-label={`Go to project ${i + 1}`}
+                    onClick={() => goTo(i)}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      active
+                        ? "w-6 bg-brand1"
+                        : "w-2 bg-zinc-600 hover:bg-zinc-400"
+                    }`}
+                  />
+                );
+              })}
+            </div>
+          </>
+        )}
       </motion.div>
 
-      {/* View all projects button */}
+      {/* View all / show less toggle */}
       <div className="text-center mt-16">
-        <Link
-          href="/projects"
-          className="inline-flex items-center gap-2 px-5 py-2 bg-brand1 text-black font-medium rounded-md hover:bg-brand2 transition-colors"
+        <button
+          type="button"
+          onClick={view === "grid" ? collapse : expand}
+          disabled={view === "circle"}
+          className="inline-flex items-center gap-2 px-5 py-2 bg-brand1 text-black font-medium rounded-md hover:bg-brand2 transition-colors disabled:opacity-60"
         >
-          View all <span>→</span>
-        </Link>
+          {view === "grid" ? (
+            <>
+              Show less <span>↑</span>
+            </>
+          ) : (
+            <>
+              View all <span>→</span>
+            </>
+          )}
+        </button>
       </div>
     </motion.section>
   );

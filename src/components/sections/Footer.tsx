@@ -20,7 +20,7 @@ const Footer = () => {
               className="flex items-center gap-3 mb-2"
             >
               <Image
-                src="/my_logo.png"
+                src="/fkvasir-crest.png"
                 alt="FKVASIR Logo"
                 width={32}
                 height={32}
@@ -125,7 +125,7 @@ const Footer = () => {
           className="flex items-center justify-center gap-2 text-gray-500 text-sm"
         >
           <Image
-            src="/my_logo.png"
+            src="/fkvasir-crest.png"
             alt="FKVASIR Logo"
             width={20}
             height={20}

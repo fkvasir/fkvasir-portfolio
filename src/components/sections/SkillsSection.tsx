@@ -112,7 +112,7 @@ const SkillsSection = () => {
             whileHover={{
               scale: 1.05,
               rotateY: 10,
-              boxShadow: "0 20px 40px rgba(120, 81, 169, 0.35)",
+              boxShadow: "0 20px 40px rgba(108, 59, 170, 0.4)",
             }}
             whileTap={{ scale: 0.95 }}
             className="bg-brand1/10 border border-brand1/30 rounded-lg p-6 text-center w-64 cursor-pointer backdrop-blur-sm"

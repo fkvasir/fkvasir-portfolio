@@ -2,13 +2,35 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaEnvelope, FaDownload, FaArrowRight } from "react-icons/fa";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface HomeSectionProps {
   profileImageKey: number;
+  nightMode?: boolean;
 }
 
-const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
+// Deterministic star field — no Math.random so positions are stable across renders
+const STARS = [
+  { top: "6%", left: "8%", size: 2, duration: 2.4, delay: 0 },
+  { top: "12%", left: "22%", size: 3, duration: 3.1, delay: 0.7 },
+  { top: "5%", left: "37%", size: 2, duration: 2.8, delay: 1.4 },
+  { top: "18%", left: "48%", size: 2, duration: 3.4, delay: 0.3 },
+  { top: "9%", left: "58%", size: 3, duration: 2.6, delay: 1.9 },
+  { top: "22%", left: "68%", size: 2, duration: 3.0, delay: 0.9 },
+  { top: "7%", left: "79%", size: 2, duration: 2.5, delay: 1.2 },
+  { top: "16%", left: "90%", size: 3, duration: 3.3, delay: 0.5 },
+  { top: "28%", left: "15%", size: 2, duration: 2.9, delay: 1.6 },
+  { top: "33%", left: "31%", size: 2, duration: 3.2, delay: 0.2 },
+  { top: "26%", left: "55%", size: 2, duration: 2.7, delay: 2.1 },
+  { top: "36%", left: "76%", size: 2, duration: 3.5, delay: 1.0 },
+  { top: "31%", left: "93%", size: 2, duration: 2.6, delay: 0.6 },
+  { top: "41%", left: "5%", size: 2, duration: 3.0, delay: 1.8 },
+];
+
+const HomeSection: React.FC<HomeSectionProps> = ({
+  profileImageKey,
+  nightMode = true,
+}) => {
   const [displayText, setDisplayText] = useState("");
   const fullText = "Hey\nI'm FKVASIR,\nFull-Stack Developer";
 
@@ -104,6 +126,93 @@ const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
           }}
           className="absolute -bottom-40 -left-40 w-96 h-96 bg-brand2 rounded-full blur-3xl"
         />
+
+        {/* Night sky — stars, moon, shooting star (toggled from the nav) */}
+        <AnimatePresence>
+          {nightMode && (
+            <motion.div
+              key="night-sky"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8 }}
+              className="absolute inset-0"
+            >
+              {STARS.map((star, i) => (
+                <motion.span
+                  key={i}
+                  className="absolute rounded-full bg-white"
+                  style={{
+                    top: star.top,
+                    left: star.left,
+                    width: star.size,
+                    height: star.size,
+                  }}
+                  animate={{ opacity: [0.15, 0.9, 0.15], scale: [1, 1.3, 1] }}
+                  transition={{
+                    duration: star.duration,
+                    repeat: Infinity,
+                    delay: star.delay,
+                    ease: "easeInOut",
+                  }}
+                />
+              ))}
+
+              {/* Golden moon */}
+              <motion.div
+                initial={{ y: 40, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 1.2, ease: "easeOut" }}
+                className="absolute top-10 right-8 md:top-14 md:right-24"
+              >
+                <div
+                  className="relative w-14 h-14 md:w-20 md:h-20 rounded-full"
+                  style={{
+                    background:
+                      "radial-gradient(circle at 35% 35%, #E8D77A, #CFB53B 60%, #A98F2F)",
+                    boxShadow:
+                      "0 0 40px rgba(207, 181, 59, 0.5), 0 0 90px rgba(207, 181, 59, 0.25)",
+                  }}
+                >
+                  <div className="absolute top-3 left-4 w-2 h-2 rounded-full bg-black/15" />
+                  <div className="absolute top-7 left-2.5 w-1.5 h-1.5 rounded-full bg-black/10" />
+                  <div className="absolute bottom-3 right-4 w-2.5 h-2.5 rounded-full bg-black/10" />
+                </div>
+              </motion.div>
+
+              {/* Shooting star */}
+              <motion.span
+                className="absolute top-[10%] left-[70%] h-px w-24 bg-gradient-to-r from-white to-transparent"
+                style={{ rotate: -35 }}
+                animate={{ x: [-20, -280], y: [0, 170], opacity: [0, 1, 0] }}
+                transition={{
+                  duration: 1.4,
+                  repeat: Infinity,
+                  repeatDelay: 6,
+                  ease: "easeOut",
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Pine treeline silhouettes */}
+        <svg
+          viewBox="0 0 1440 140"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+          className="absolute bottom-0 left-0 w-full h-24 md:h-36 pointer-events-none"
+        >
+          <path
+            d="M0 140 L0 95 L60 95 L95 55 L130 95 L180 95 L215 62 L250 95 L310 95 L350 48 L390 95 L450 95 L485 60 L520 95 L580 95 L620 42 L660 95 L720 95 L755 58 L790 95 L850 95 L890 50 L930 95 L990 95 L1025 62 L1060 95 L1120 95 L1160 45 L1200 95 L1260 95 L1295 58 L1330 95 L1390 95 L1415 70 L1440 95 L1440 140 Z"
+            fill="#2A1548"
+            opacity="0.8"
+          />
+          <path
+            d="M0 140 L0 105 L40 105 L70 35 L100 105 L140 105 L165 60 L190 105 L240 105 L275 25 L310 105 L360 105 L385 55 L410 105 L460 105 L495 30 L530 105 L585 105 L610 58 L635 105 L690 105 L725 22 L760 105 L815 105 L840 55 L865 105 L920 105 L955 28 L990 105 L1045 105 L1070 60 L1095 105 L1150 105 L1185 25 L1220 105 L1275 105 L1300 55 L1325 105 L1380 105 L1410 38 L1440 105 L1440 140 Z"
+            fill="#050308"
+          />
+        </svg>
       </div>
 
       <motion.div
@@ -206,7 +315,7 @@ const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
                 transition={{ delay: 1 + index * 0.1, duration: 0.3 }}
                 whileHover={{
                   scale: 1.1,
-                  backgroundColor: "#9966CC",
+                  backgroundColor: "#6C3BAA",
                   transition: { duration: 0.2 },
                 }}
                 className="px-2 py-1 text-xs bg-brand1 text-black rounded cursor-pointer"
@@ -220,7 +329,7 @@ const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
             variants={itemVariants}
             whileHover={{
               scale: 1.05,
-              boxShadow: "0 10px 25px rgba(120, 81, 169, 0.4)",
+              boxShadow: "0 10px 25px rgba(108, 59, 170, 0.45)",
             }}
             whileTap={{ scale: 0.95 }}
             href="/resume.pdf"
@@ -339,8 +448,8 @@ const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
                 variants={itemVariants}
                 whileHover={{
                   scale: 1.05,
-                  backgroundColor: "rgba(120, 81, 169, 0.15)",
-                  borderColor: "rgba(120, 81, 169, 0.4)",
+                  backgroundColor: "rgba(108, 59, 170, 0.2)",
+                  borderColor: "rgba(108, 59, 170, 0.5)",
                 }}
                 className="flex items-center gap-4 bg-zinc-800/50 p-4 rounded-lg border border-transparent transition-all duration-300"
               >

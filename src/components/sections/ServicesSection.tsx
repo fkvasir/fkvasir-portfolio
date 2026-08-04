@@ -141,7 +141,7 @@ const ServicesSection = () => {
               variants={itemVariants}
               whileHover={{
                 scale: 1.05,
-                boxShadow: "0 20px 40px rgba(120, 81, 169, 0.35)",
+                boxShadow: "0 20px 40px rgba(108, 59, 170, 0.4)",
               }}
               className="bg-bg1/80 border border-brand1/30 rounded-lg p-6 backdrop-blur-sm"
             >

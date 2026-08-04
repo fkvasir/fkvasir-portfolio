@@ -5,6 +5,7 @@ import Logo from "@/components/logo";
 import Link from "next/link";
 import LazySection from "@/components/LazySection";
 import { motion } from "framer-motion";
+import { FaSun, FaMoon } from "react-icons/fa";
 
 // Import section components without dynamic loading
 import HomeSection from "@/components/sections/HomeSection";
@@ -20,6 +21,8 @@ import CTABanner from "@/components/CTABanner";
 function Home() {
   const [activeSection, setActiveSection] = useState("home");
   const [profileImageKey, setProfileImageKey] = useState(1);
+  const [scrolled, setScrolled] = useState(false);
+  const [nightMode, setNightMode] = useState(true);
 
   useEffect(() => {
     // This will force a refresh of the image on the client side only
@@ -27,6 +30,7 @@ function Home() {
 
     // Function to handle scroll events and update active section
     const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
       const sections = document.querySelectorAll("section[id], div[id]");
       const scrollPosition = window.scrollY + 100; // Added offset for fixed header
 
@@ -62,7 +66,13 @@ function Home() {
 
   return (
     <div>
-      <header className="fixed top-0 left-0 z-50 px-4 md:px-12 py-4 bg-bg1 border-y-2 border-brand1 w-full shadow-lg">
+      <header
+        className={`fixed z-50 py-3 bg-bg1/90 backdrop-blur-md shadow-lg transition-all duration-300 ${
+          scrolled
+            ? "top-0 left-0 translate-x-0 w-full max-w-none rounded-none border-b-2 border-brand1 px-4 md:px-12"
+            : "top-4 left-1/2 -translate-x-1/2 w-[94%] max-w-6xl rounded-2xl border border-brand1/40 px-4 md:px-8"
+        }`}
+      >
         <div className="flex flex-col md:flex-row justify-between items-center w-full">
           {/* Logo */}
           <div className="flex flex-row items-center gap-2 mb-4 md:mb-0">
@@ -70,8 +80,8 @@ function Home() {
             <h1 className="text-white">FKVASIR</h1>
           </div>
           {/* Home, Projects, About */}
-          <nav className="flex flex-col md:flex-row justify-between items-center w-full md:w-auto">
-            <ul className="flex flex-row items-center gap-4 md:gap-10 mb-4 md:mb-0 md:mr-10 relative">
+          <nav className="flex flex-row items-center justify-center gap-3 md:gap-6 w-full md:w-auto">
+            <ul className="flex flex-row flex-wrap justify-center items-center gap-3 md:gap-8 relative">
               {["home", "services", "about", "projects", "experience", "contacts"].map((section) => (
                 <li key={section} className="relative">
                   <Link
@@ -96,17 +106,45 @@ function Home() {
                 </li>
               ))}
             </ul>
+            {/* Night mode toggle — moon slides out, sun rises in */}
+            <button
+              type="button"
+              aria-label="Toggle night mode"
+              onClick={() => setNightMode((n) => !n)}
+              className="relative w-10 h-10 flex-none rounded-full border border-brand1/40 bg-bg2/60 overflow-hidden hover:border-brand1 transition-colors"
+            >
+              <motion.span
+                initial={false}
+                animate={
+                  nightMode ? { y: 0, opacity: 1 } : { y: -20, opacity: 0 }
+                }
+                transition={{ duration: 0.3 }}
+                className="absolute inset-0 flex items-center justify-center text-brand2"
+              >
+                <FaMoon size={15} />
+              </motion.span>
+              <motion.span
+                initial={false}
+                animate={
+                  nightMode ? { y: 20, opacity: 0 } : { y: 0, opacity: 1 }
+                }
+                transition={{ duration: 0.3 }}
+                className="absolute inset-0 flex items-center justify-center text-brand1"
+              >
+                <FaSun size={15} />
+              </motion.span>
+            </button>
           </nav>
         </div>
       </header>
 
       {/* Add padding to account for fixed header and avoid white line */}
-      <div className="pt-28 md:pt-20 bg-bg2">
+      <div className="pt-36 md:pt-28 bg-bg2">
         {/* Main content sections */}
         <LazySection
           id="home"
           component={HomeSection}
-          props={{ profileImageKey }}
+          props={{ profileImageKey, nightMode }}
         />
         <LazySection id="services" component={ServicesSection} />
         <LazySection id="about" component={AboutSection} />
