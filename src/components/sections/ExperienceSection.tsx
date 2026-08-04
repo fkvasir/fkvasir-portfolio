@@ -11,6 +11,15 @@ type Experience = {
   description: string;
 };
 
+// Constant shining stars — brighter and bigger than the twinkling ones
+const SHINING_STARS = [
+  { top: "10%", left: "35%", size: 6, duration: 3.2, delay: 0 },
+  { top: "26%", left: "88%", size: 5, duration: 2.8, delay: 0.8 },
+  { top: "48%", left: "16%", size: 6, duration: 3.6, delay: 1.5 },
+  { top: "62%", left: "60%", size: 5, duration: 3.0, delay: 0.4 },
+  { top: "84%", left: "90%", size: 6, duration: 3.4, delay: 1.1 },
+];
+
 // Ambient backdrop stars for the timeline
 const EXPERIENCE_STARS = [
   { top: "8%", left: "12%", size: 3, duration: 2.6, delay: 0.2 },
@@ -274,7 +283,13 @@ const ExperienceSection = () => {
                 "radial-gradient(circle at 30% 30%, rgba(108, 59, 170, 0.4), rgba(108, 59, 170, 0.14) 55%, transparent 78%)",
             }}
           />
-          <div className="absolute -inset-6 rounded-full border border-brand1/40" />
+          <div
+            className="absolute -inset-6 rounded-full border-2 border-brand1/80"
+            style={{
+              boxShadow:
+                "0 0 20px rgba(207, 181, 59, 0.5), inset 0 0 20px rgba(207, 181, 59, 0.25)",
+            }}
+          />
           <div className="absolute inset-8 rounded-full border border-white/10" />
         </div>
         <div className="absolute top-[40%] left-0 -translate-x-1/2 w-[20rem] h-[20rem] md:w-[28rem] md:h-[28rem]">
@@ -285,7 +300,13 @@ const ExperienceSection = () => {
                 "radial-gradient(circle at 70% 30%, rgba(108, 59, 170, 0.38), rgba(108, 59, 170, 0.12) 55%, transparent 78%)",
             }}
           />
-          <div className="absolute -inset-6 rounded-full border border-brand1/40" />
+          <div
+            className="absolute -inset-6 rounded-full border-2 border-brand1/80"
+            style={{
+              boxShadow:
+                "0 0 20px rgba(207, 181, 59, 0.5), inset 0 0 20px rgba(207, 181, 59, 0.25)",
+            }}
+          />
           <div className="absolute inset-8 rounded-full border border-white/10" />
         </div>
         <div className="absolute top-[72%] right-0 translate-x-1/2 w-[16rem] h-[16rem] md:w-[24rem] md:h-[24rem]">
@@ -296,7 +317,13 @@ const ExperienceSection = () => {
                 "radial-gradient(circle at 30% 40%, rgba(108, 59, 170, 0.36), rgba(108, 59, 170, 0.12) 55%, transparent 78%)",
             }}
           />
-          <div className="absolute -inset-6 rounded-full border border-brand1/40" />
+          <div
+            className="absolute -inset-6 rounded-full border-2 border-brand1/80"
+            style={{
+              boxShadow:
+                "0 0 20px rgba(207, 181, 59, 0.5), inset 0 0 20px rgba(207, 181, 59, 0.25)",
+            }}
+          />
           <div className="absolute inset-8 rounded-full border border-white/10" />
         </div>
 
@@ -311,6 +338,27 @@ const ExperienceSection = () => {
               height: star.size,
             }}
             animate={{ opacity: [0.15, 0.9, 0.15], scale: [1, 1.3, 1] }}
+            transition={{
+              duration: star.duration,
+              repeat: Infinity,
+              delay: star.delay,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+        {SHINING_STARS.map((star, i) => (
+          <motion.span
+            key={`shine-${i}`}
+            className="absolute rounded-full bg-white"
+            style={{
+              top: star.top,
+              left: star.left,
+              width: star.size,
+              height: star.size,
+              boxShadow:
+                "0 0 10px rgba(255, 255, 255, 0.95), 0 0 22px rgba(207, 181, 59, 0.7)",
+            }}
+            animate={{ scale: [1, 1.35, 1] }}
             transition={{
               duration: star.duration,
               repeat: Infinity,
