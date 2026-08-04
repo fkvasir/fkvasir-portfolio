@@ -11,6 +11,18 @@ type Experience = {
   description: string;
 };
 
+// Ambient backdrop stars for the timeline
+const EXPERIENCE_STARS = [
+  { top: "8%", left: "12%", size: 2, duration: 2.6, delay: 0.2 },
+  { top: "14%", left: "78%", size: 3, duration: 3.1, delay: 0.9 },
+  { top: "30%", left: "6%", size: 2, duration: 2.8, delay: 1.4 },
+  { top: "42%", left: "92%", size: 2, duration: 3.3, delay: 0.4 },
+  { top: "58%", left: "10%", size: 2, duration: 2.5, delay: 1.8 },
+  { top: "66%", left: "85%", size: 3, duration: 3.0, delay: 0.6 },
+  { top: "80%", left: "20%", size: 2, duration: 2.9, delay: 1.1 },
+  { top: "88%", left: "70%", size: 2, duration: 3.4, delay: 0.3 },
+];
+
 const experiences: Experience[] = [
   {
     title: "Caregiver Booking & Recreational Activity Generator",
@@ -227,32 +239,111 @@ const ExperienceSection = () => {
       animate={inView ? "visible" : "hidden"}
       className="min-h-screen bg-bg2 py-20 relative overflow-hidden"
     >
-      {/* Section indicator */}
-      <motion.div
-        variants={headerItemVariants}
-        className="flex items-center justify-center mb-16"
-      >
+      {/* Ambient night backdrop — gold fog, stars, comet, and a UFO */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <motion.div
-          initial={{ width: 0 }}
-          animate={inView ? { width: 4 } : { width: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="h-12 bg-brand1/30"
+          animate={{
+            x: [0, 60, 0],
+            y: [0, -30, 0],
+            opacity: [0.05, 0.12, 0.05],
+          }}
+          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[15%] -left-24 w-[28rem] h-[28rem] rounded-full bg-brand1 blur-3xl"
         />
         <motion.div
-          initial={{ scale: 0, rotate: -180 }}
-          animate={
-            inView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }
-          }
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-brand1 text-brand1 mx-2 bg-bg2"
+          animate={{
+            x: [0, -50, 0],
+            y: [0, 40, 0],
+            opacity: [0.04, 0.1, 0.04],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 4,
+          }}
+          className="absolute bottom-[10%] -right-24 w-[26rem] h-[26rem] rounded-full bg-brand1 blur-3xl"
+        />
+        {EXPERIENCE_STARS.map((star, i) => (
+          <motion.span
+            key={i}
+            className="absolute rounded-full bg-white"
+            style={{
+              top: star.top,
+              left: star.left,
+              width: star.size,
+              height: star.size,
+            }}
+            animate={{ opacity: [0.15, 0.9, 0.15], scale: [1, 1.3, 1] }}
+            transition={{
+              duration: star.duration,
+              repeat: Infinity,
+              delay: star.delay,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+        {/* Comet */}
+        <motion.span
+          className="absolute top-[18%] left-[90%] h-0.5 w-40 rounded-full bg-gradient-to-r from-white via-brand1/80 to-transparent"
+          style={{
+            rotate: -30,
+            boxShadow: "0 0 12px rgba(255, 255, 255, 0.7)",
+          }}
+          animate={{ x: [0, -900], y: [0, 480], opacity: [0, 1, 1, 0] }}
+          transition={{
+            duration: 2.4,
+            repeat: Infinity,
+            repeatDelay: 8,
+            ease: "easeOut",
+          }}
+        />
+        {/* UFO */}
+        <motion.span
+          className="absolute top-[55%] left-0 text-3xl"
+          animate={{
+            x: ["-10vw", "110vw"],
+            y: [0, -24, 10, -18, 0],
+            rotate: [0, 8, -8, 5, 0],
+            opacity: [0, 1, 1, 1, 0],
+          }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            repeatDelay: 6,
+            ease: "linear",
+          }}
         >
-          0
-        </motion.div>
-        <motion.div
-          initial={{ width: 0 }}
-          animate={inView ? { width: 4 } : { width: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="h-12 bg-brand1/30"
+          🛸
+        </motion.span>
+      </div>
+
+      {/* Scroll-down mouse indicator */}
+      <motion.div
+        variants={headerItemVariants}
+        className="flex items-center justify-center gap-4 mb-16"
+      >
+        <motion.span
+          animate={{ opacity: [0.2, 1, 0.2], y: [0, 10, 0] }}
+          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          className="block w-1 h-10 rounded bg-brand1/50"
+        />
+        <div className="w-7 h-12 rounded-full border-2 border-brand1 flex justify-center pt-2">
+          <motion.span
+            animate={{ y: [0, 14], opacity: [1, 0] }}
+            transition={{ duration: 1.4, repeat: Infinity, ease: "easeIn" }}
+            className="block w-1.5 h-3 rounded-full bg-brand1"
+          />
+        </div>
+        <motion.span
+          animate={{ opacity: [0.2, 1, 0.2], y: [0, 10, 0] }}
+          transition={{
+            duration: 1.6,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 0.3,
+          }}
+          className="block w-1 h-10 rounded bg-brand1/50"
         />
       </motion.div>
 

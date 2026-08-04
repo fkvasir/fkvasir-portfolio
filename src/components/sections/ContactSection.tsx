@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -7,13 +8,30 @@ import { Label } from "@/components/ui/label";
 const ContactSection = () => {
   return (
     <section id="contacts" className="min-h-screen bg-bg2 py-20 relative">
-      {/* Section indicator */}
-      <div className="flex items-center justify-center mb-16">
-        <div className="w-1 h-12 bg-brand1/30"></div>
-        <div className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-brand1 text-brand1 mx-2">
-          0
+      {/* Scroll-down mouse indicator */}
+      <div className="flex items-center justify-center gap-4 mb-16">
+        <motion.span
+          animate={{ opacity: [0.2, 1, 0.2], y: [0, 10, 0] }}
+          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          className="block w-1 h-10 rounded bg-brand1/50"
+        />
+        <div className="w-7 h-12 rounded-full border-2 border-brand1 flex justify-center pt-2">
+          <motion.span
+            animate={{ y: [0, 14], opacity: [1, 0] }}
+            transition={{ duration: 1.4, repeat: Infinity, ease: "easeIn" }}
+            className="block w-1.5 h-3 rounded-full bg-brand1"
+          />
         </div>
-        <div className="w-1 h-12 bg-brand1/30"></div>
+        <motion.span
+          animate={{ opacity: [0.2, 1, 0.2], y: [0, 10, 0] }}
+          transition={{
+            duration: 1.6,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 0.3,
+          }}
+          className="block w-1 h-10 rounded bg-brand1/50"
+        />
       </div>
 
       {/* Section title */}

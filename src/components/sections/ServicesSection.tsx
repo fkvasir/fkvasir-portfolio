@@ -20,18 +20,6 @@ const CARD_STARS = [
   { top: "30%", left: "90%", size: 2, duration: 3.4, delay: 1.5 },
 ];
 
-const nightSceneVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 0 },
-  hover: { opacity: 1 },
-};
-
-const wedgeVariants = {
-  hidden: { x: 56, y: 56, opacity: 0 },
-  visible: { x: 56, y: 56, opacity: 0 },
-  hover: { x: 0, y: 0, opacity: 1 },
-};
-
 // Deterministic star field for the section background
 const SECTION_STARS = [
   { top: "8%", left: "6%", size: 2, duration: 2.7, delay: 0.2 },
@@ -155,32 +143,32 @@ const ServicesSection = () => {
         animate={inView ? "visible" : "hidden"}
         className="relative z-10"
       >
-        {/* Section indicator */}
+        {/* Scroll-down mouse indicator */}
         <motion.div
           variants={itemVariants}
-          className="flex items-center justify-center mb-16"
+          className="flex items-center justify-center gap-4 mb-16"
         >
-          <motion.div
-            initial={{ height: 0 }}
-            animate={inView ? { height: 48 } : { height: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="w-1 bg-brand1/30"
+          <motion.span
+            animate={{ opacity: [0.2, 1, 0.2], y: [0, 10, 0] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+            className="block w-1 h-10 rounded bg-brand1/50"
           />
-          <motion.div
-            initial={{ scale: 0, rotate: -180 }}
-            animate={
-              inView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }
-            }
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-brand1 text-brand1 mx-2 bg-bg2"
-          >
-            0
-          </motion.div>
-          <motion.div
-            initial={{ height: 0 }}
-            animate={inView ? { height: 48 } : { height: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="w-1 bg-brand1/30"
+          <div className="w-7 h-12 rounded-full border-2 border-brand1 flex justify-center pt-2">
+            <motion.span
+              animate={{ y: [0, 14], opacity: [1, 0] }}
+              transition={{ duration: 1.4, repeat: Infinity, ease: "easeIn" }}
+              className="block w-1.5 h-3 rounded-full bg-brand1"
+            />
+          </div>
+          <motion.span
+            animate={{ opacity: [0.2, 1, 0.2], y: [0, 10, 0] }}
+            transition={{
+              duration: 1.6,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 0.3,
+            }}
+            className="block w-1 h-10 rounded bg-brand1/50"
           />
         </motion.div>
 
@@ -208,21 +196,15 @@ const ServicesSection = () => {
           {services.map(({ icon: Icon, title, blurb, tech }) => (
             <motion.div
               key={title}
-              variants={{
-                ...itemVariants,
-                hover: {
-                  scale: 1.05,
-                  boxShadow: "0 20px 40px rgba(108, 59, 170, 0.4)",
-                },
-              }}
-              whileHover="hover"
-              className="relative overflow-hidden bg-bg1/80 border border-brand1/30 rounded-lg p-6 backdrop-blur-sm"
+              variants={itemVariants}
+              whileHover={{ scale: 1.03 }}
+              className="group relative pt-8"
             >
+              {/* Card body */}
+              <div className="relative overflow-hidden bg-bg1/80 border border-brand1/30 rounded-lg px-6 pb-6 pt-12 backdrop-blur-sm transition-shadow duration-300 group-hover:shadow-[0_20px_40px_rgba(108,59,170,0.4)]">
               {/* Hover night scene — stars, shooting star, treeline */}
-              <motion.div
-                variants={nightSceneVariants}
-                transition={{ duration: 0.4 }}
-                className="absolute inset-0 pointer-events-none"
+              <div
+                className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 aria-hidden="true"
               >
                 {CARD_STARS.map((star, i) => (
@@ -264,13 +246,11 @@ const ServicesSection = () => {
                     backgroundPosition: "bottom left",
                   }}
                 />
-              </motion.div>
+              </div>
 
               {/* Gold corner fill sweeping in diagonally from the bottom right */}
-              <motion.div
-                variants={wedgeVariants}
-                transition={{ duration: 0.35, ease: "easeOut" }}
-                className="absolute bottom-0 right-0 w-14 h-14 pointer-events-none"
+              <div
+                className="absolute bottom-0 right-0 w-14 h-14 pointer-events-none opacity-0 translate-x-14 translate-y-14 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-300 ease-out"
                 aria-hidden="true"
                 style={{
                   clipPath: "polygon(100% 0, 100% 100%, 0 100%)",
@@ -279,42 +259,28 @@ const ServicesSection = () => {
               />
 
               <div className="relative z-10">
-                {/* Icon spins away and morphs into the moon on hover */}
-                <div className="relative w-12 h-12 bg-brand1/10 border border-brand1/30 rounded flex items-center justify-center mb-4">
-                  <motion.span
-                    variants={{
-                      hidden: { rotate: 0, scale: 1, opacity: 1 },
-                      visible: { rotate: 0, scale: 1, opacity: 1 },
-                      hover: { rotate: 180, scale: 0, opacity: 0 },
-                    }}
-                    transition={{ duration: 0.45, ease: "easeInOut" }}
-                    className="absolute inset-0 flex items-center justify-center"
-                  >
-                    <Icon className="text-brand1 text-xl" />
-                  </motion.span>
-                  <motion.span
-                    variants={{
-                      hidden: { rotate: -180, scale: 0, opacity: 0 },
-                      visible: { rotate: -180, scale: 0, opacity: 0 },
-                      hover: { rotate: 0, scale: 1, opacity: 1 },
-                    }}
-                    transition={{ duration: 0.45, ease: "easeInOut" }}
-                    className="absolute inset-0 flex items-center justify-center"
-                  >
-                    <span
-                      className="block w-6 h-6 rounded-full"
-                      style={{
-                        background:
-                          "radial-gradient(circle at 35% 35%, #E8D77A, #CFB53B 60%, #A98F2F)",
-                        boxShadow:
-                          "0 0 12px rgba(207, 181, 59, 0.7), 0 0 28px rgba(207, 181, 59, 0.4)",
-                      }}
-                    />
-                  </motion.span>
-                </div>
                 <h3 className="text-white font-bold text-lg mb-2">{title}</h3>
                 <p className="text-gray-400 text-sm mb-3">{blurb}</p>
                 <span className="text-xs font-mono text-brand1">{tech}</span>
+              </div>
+              </div>
+
+              {/* Icon chip overlapping the card's top edge — morphs into the moon */}
+              <div className="absolute top-0 left-6 z-20 w-16 h-16 rounded-lg bg-bg1 border border-brand1/30 flex items-center justify-center transition-colors duration-500 group-hover:bg-transparent group-hover:border-transparent">
+                <span className="absolute inset-0 flex items-center justify-center transition-all duration-500 group-hover:rotate-180 group-hover:scale-0 group-hover:opacity-0">
+                  <Icon className="text-brand1 text-2xl" />
+                </span>
+                <span className="absolute inset-0 flex items-center justify-center -rotate-180 scale-0 opacity-0 transition-all duration-500 group-hover:rotate-0 group-hover:scale-100 group-hover:opacity-100">
+                  <span
+                    className="block w-14 h-14 rounded-full"
+                    style={{
+                      background:
+                        "radial-gradient(circle at 35% 35%, #E8D77A, #CFB53B 60%, #A98F2F)",
+                      boxShadow:
+                        "0 0 25px rgba(207, 181, 59, 0.8), 0 0 60px rgba(207, 181, 59, 0.4)",
+                    }}
+                  />
+                </span>
               </div>
             </motion.div>
           ))}

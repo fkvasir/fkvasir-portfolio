@@ -201,17 +201,20 @@ const ProjectsSection = () => {
   };
   const collapse = () => {
     if (view !== "grid") return;
-    // Shrink the section first, then scroll — so the smooth scroll lands on
-    // the final layout instead of drifting into the next section
-    setView("vacuum");
-    requestAnimationFrame(() => {
-      document
-        .getElementById("projects")
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+    // Scroll to the top of the section first so the vacuum plays in view,
+    // then run the morph once the scroll has settled
+    document
+      .getElementById("projects")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
     morphTimer.current = setTimeout(
-      () => setView("carousel"),
-      reduceMotion ? 0 : 650
+      () => {
+        setView("vacuum");
+        morphTimer.current = setTimeout(
+          () => setView("carousel"),
+          reduceMotion ? 0 : 650
+        );
+      },
+      reduceMotion ? 0 : 700
     );
   };
 
@@ -245,32 +248,32 @@ const ProjectsSection = () => {
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
     >
-      {/* Section indicator */}
+      {/* Scroll-down mouse indicator */}
       <motion.div
         variants={itemVariants}
-        className="flex items-center justify-center mb-16"
+        className="flex items-center justify-center gap-4 mb-16"
       >
-        <motion.div
-          initial={{ width: 0 }}
-          animate={inView ? { width: 4 } : { width: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="h-12 bg-brand1/30"
+        <motion.span
+          animate={{ opacity: [0.2, 1, 0.2], y: [0, 10, 0] }}
+          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          className="block w-1 h-10 rounded bg-brand1/50"
         />
-        <motion.div
-          initial={{ scale: 0, rotate: -180 }}
-          animate={
-            inView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }
-          }
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-brand1 text-brand1 mx-2 bg-bg1"
-        >
-          0
-        </motion.div>
-        <motion.div
-          initial={{ width: 0 }}
-          animate={inView ? { width: 4 } : { width: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="h-12 bg-brand1/30"
+        <div className="w-7 h-12 rounded-full border-2 border-brand1 flex justify-center pt-2">
+          <motion.span
+            animate={{ y: [0, 14], opacity: [1, 0] }}
+            transition={{ duration: 1.4, repeat: Infinity, ease: "easeIn" }}
+            className="block w-1.5 h-3 rounded-full bg-brand1"
+          />
+        </div>
+        <motion.span
+          animate={{ opacity: [0.2, 1, 0.2], y: [0, 10, 0] }}
+          transition={{
+            duration: 1.6,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 0.3,
+          }}
+          className="block w-1 h-10 rounded bg-brand1/50"
         />
       </motion.div>
 
@@ -401,13 +404,17 @@ const ProjectsSection = () => {
               <motion.div
                 key={p.id}
                 initial={{ opacity: 0, scale: 0.2 }}
-                animate={{ opacity: 1, scale: 1 }}
-                whileHover={{ y: -6, scale: 1.03 }}
-                transition={{
-                  delay: reduceMotion ? 0 : i * 0.05,
-                  duration: reduceMotion ? 0 : 0.5,
-                  ease: [0.32, 0.72, 0, 1],
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  transition: {
+                    delay: reduceMotion ? 0 : i * 0.05,
+                    duration: reduceMotion ? 0 : 0.5,
+                    ease: [0.32, 0.72, 0, 1],
+                  },
                 }}
+                whileHover={{ y: -6, scale: 1.03 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
               >
                 <ProjectCard
                   project={p}

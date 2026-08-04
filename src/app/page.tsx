@@ -69,7 +69,7 @@ function Home() {
   return (
     <div>
       <header
-        className={`fixed left-1/2 -translate-x-1/2 z-50 py-3 px-4 md:px-8 bg-bg1/90 backdrop-blur-md shadow-lg border border-brand1/40 transition-[top,width,max-width,border-radius] duration-500 ease-in-out ${
+        className={`fixed left-1/2 -translate-x-1/2 z-50 py-3 px-4 md:px-8 bg-bg1/90 backdrop-blur-md shadow-lg border border-brand1/40 transition-[top,width,max-width,border-radius] duration-300 ease-out ${
           scrolled
             ? "top-0 w-full max-w-[120rem] rounded-none"
             : "top-4 w-[94%] max-w-[90rem] rounded-2xl"
