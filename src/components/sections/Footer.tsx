@@ -122,7 +122,11 @@ const Footer = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex items-center justify-center gap-2 bg-brand1 text-black text-sm font-medium rounded-md py-3 px-4"
+          className="flex items-center justify-center gap-2 text-brand1 text-sm font-medium"
+          style={{
+            textShadow:
+              "0 0 8px rgba(207, 181, 59, 0.9), 0 0 18px rgba(207, 181, 59, 0.5)",
+          }}
         >
           <Image
             src="/fkvasir-crest.png"
@@ -130,6 +134,9 @@ const Footer = () => {
             width={20}
             height={20}
             className="rounded-sm"
+            style={{
+              filter: "drop-shadow(0 0 6px rgba(207, 181, 59, 0.7))",
+            }}
           />
           <p>© {currentYear} FKVASIR. All rights reserved.</p>
         </motion.div>
