@@ -81,7 +81,7 @@ export const projects: Project[] = [
     tags: ["Next.js", "React", "Full Stack", "AI Integration", "Tailwind CSS"],
     demo: "https://www.geriatriccaresolution.com",
     category: "software",
-    period: "May 2025 – May 2026",
+    period: "May 2025 – Present",
     private: true,
   },
   {
@@ -91,7 +91,7 @@ export const projects: Project[] = [
     role: "Full Stack Developer",
     description:
       "Developed a fullstack e-commerce platform with booking, product pages, and user-community discussion features.",
-    image: "/about-me_coding.jpg",
+    image: "/private-project-placeholder.png",
     tags: ["Next.js", "React", "Full Stack", "E-commerce", "Tailwind CSS"],
     category: "software",
     period: "Apr 2025 – Nov 2025",
@@ -161,7 +161,7 @@ export const projects: Project[] = [
     role: "Full Stack Developer",
     description:
       "A university website project where I designed and developed the landing page feature and implemented backend MySQL databases for courses and sections, enabling faculty to enroll students to courses and assign sections to students.",
-    image: "/coding-background.jpg",
+    image: "/private-project-placeholder.png",
     tags: ["Full Stack", "MySQL", "Backend", "HTML", "CSS"],
     category: "software",
     period: "Aug 2023 – Dec 2023",
@@ -172,7 +172,7 @@ export const projects: Project[] = [
     title: "Malware Detection Using Machine Learning",
     description:
       "A machine learning-based system to identify malware applications with SMOTE for addressing class imbalance.",
-    image: "/coding-background.jpg",
+    image: "/private-project-placeholder.png",
     tags: ["Python", "Random Forest", "SVM", "SMOTE", "Data Mining"],
     github:
       "https://github.com/fkvasir/Malware-Detection-Using-Machine-Learning",
@@ -187,7 +187,7 @@ export const projects: Project[] = [
     title: "Car Type Classification Using CNN",
     description:
       "Deep learning model using Convolutional Neural Networks to classify car types based on images with data augmentation.",
-    image: "/about-me_coding.jpg",
+    image: "/private-project-placeholder.png",
     tags: ["Python", "TensorFlow", "CNN", "Computer Vision", "Deep Learning"],
     github: "https://github.com/fkvasir/CSC173_Intelligent-Systems/tree/main",
     demo: "https://github.com/fkvasir/CSC173_Intelligent-Systems/tree/main",

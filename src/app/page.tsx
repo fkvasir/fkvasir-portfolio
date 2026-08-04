@@ -8,12 +8,14 @@ import { motion } from "framer-motion";
 
 // Import section components without dynamic loading
 import HomeSection from "@/components/sections/HomeSection";
+import ServicesSection from "@/components/sections/ServicesSection";
 import AboutSection from "@/components/sections/AboutSection";
 import SkillsSection from "@/components/sections/SkillsSection";
 import ProjectsSection from "@/components/sections/ProjectsSection";
 import ExperienceSection from "@/components/sections/ExperienceSection";
 import ContactSection from "@/components/sections/ContactSection";
 import Footer from "@/components/sections/Footer";
+import CTABanner from "@/components/CTABanner";
 
 function Home() {
   const [activeSection, setActiveSection] = useState("home");
@@ -70,7 +72,7 @@ function Home() {
           {/* Home, Projects, About */}
           <nav className="flex flex-col md:flex-row justify-between items-center w-full md:w-auto">
             <ul className="flex flex-row items-center gap-4 md:gap-10 mb-4 md:mb-0 md:mr-10 relative">
-              {["home", "about", "projects", "experience", "contacts"].map((section) => (
+              {["home", "services", "about", "projects", "experience", "contacts"].map((section) => (
                 <li key={section} className="relative">
                   <Link
                     href={`#${section}`}
@@ -106,10 +108,13 @@ function Home() {
           component={HomeSection}
           props={{ profileImageKey }}
         />
+        <LazySection id="services" component={ServicesSection} />
         <LazySection id="about" component={AboutSection} />
         <LazySection id="skills" component={SkillsSection} />
         <LazySection id="projects" component={ProjectsSection} />
+        <CTABanner message="Like what you see? Let's build yours." />
         <LazySection id="experience" component={ExperienceSection} />
+        <CTABanner />
         <LazySection id="contacts" component={ContactSection} />
       </div>
       <Footer />

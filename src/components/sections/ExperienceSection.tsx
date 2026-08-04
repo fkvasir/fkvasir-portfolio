@@ -13,6 +13,14 @@ type Experience = {
 
 const experiences: Experience[] = [
   {
+    title: "Caregiver Booking & Recreational Activity Generator",
+    company: "Geriatric Care Solutions",
+    role: "Full Stack Developer",
+    period: "May 2025 – Present",
+    description:
+      "Contributed to the development of a fullstack caregiver booking platform delivering personalized activities for elderly care.",
+  },
+  {
     title: "AI Daily Living Assistant & Personal Life OS",
     company: "Personal Project",
     role: "Full Stack Developer",
@@ -27,14 +35,6 @@ const experiences: Experience[] = [
     period: "Apr 2026 – May 2026",
     description:
       "Built a subscription-based nutritionist meal-planning platform on Next.js, NestJS, and PostgreSQL with an R&D consultation-to-kitchen workflow, Xendit subscription payments, Resend transactional email, and free meal-delivery scheduling.",
-  },
-  {
-    title: "Caregiver Booking & Recreational Activity Generator",
-    company: "Geriatric Care Solutions",
-    role: "Full Stack Developer",
-    period: "May 2025 – May 2026",
-    description:
-      "Contributed to the development of a fullstack caregiver booking platform delivering personalized activities for elderly care.",
   },
   {
     title: "E-commerce Website",
