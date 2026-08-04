@@ -30,6 +30,8 @@ const ProjectCard = ({
 }) => {
   const ringClass = isCenter
     ? "ring-2 ring-brand1/50 shadow-xl shadow-brand1/20 border-brand1/40"
+    : variant === "grid"
+    ? "border-zinc-700 hover:ring-2 hover:ring-brand1/50 hover:shadow-xl hover:shadow-brand1/20 hover:border-brand1/40 transition-all duration-300"
     : "border-zinc-700";
   const imgSrc =
     variant === "grid"
@@ -194,10 +196,14 @@ const ProjectsSection = () => {
   };
   const collapse = () => {
     if (view !== "grid") return;
-    document
-      .getElementById("projects")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    // Shrink the section first, then scroll — so the smooth scroll lands on
+    // the final layout instead of drifting into the next section
     setView("vacuum");
+    requestAnimationFrame(() => {
+      document
+        .getElementById("projects")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
     morphTimer.current = setTimeout(
       () => setView("carousel"),
       reduceMotion ? 0 : 650
@@ -283,6 +289,34 @@ const ProjectsSection = () => {
       >
         {view !== "grid" ? (
           <div className="relative h-[30rem] md:h-[32rem] overflow-hidden">
+            {/* White blackhole at the center that swallows the cards */}
+            {(view === "circle" || view === "vacuum") && (
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none">
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={
+                    view === "vacuum"
+                      ? { scale: [0.4, 1.3, 0], opacity: [1, 1, 0] }
+                      : { scale: 1, opacity: 1 }
+                  }
+                  transition={
+                    view === "vacuum"
+                      ? {
+                          duration: reduceMotion ? 0 : 0.7,
+                          times: [0, 0.7, 1],
+                        }
+                      : { duration: reduceMotion ? 0 : 0.4 }
+                  }
+                  className="w-24 h-24 rounded-full"
+                  style={{
+                    background:
+                      "radial-gradient(circle, #FFFFFF 0%, rgba(255, 255, 255, 0.85) 35%, rgba(255, 255, 255, 0.15) 70%, transparent 100%)",
+                    boxShadow:
+                      "0 0 60px rgba(255, 255, 255, 0.8), 0 0 120px rgba(255, 255, 255, 0.4)",
+                  }}
+                />
+              </div>
+            )}
             {projects.map((p, i) => {
               let offset = i - activeIndex;
               if (offset > N / 2) offset -= N;
@@ -304,7 +338,6 @@ const ProjectsSection = () => {
                 y: Math.sin(angle) * ry,
                 scale: 0.35,
                 opacity: 1,
-                rotate: 0,
                 zIndex: 10,
               };
 
@@ -314,7 +347,6 @@ const ProjectsSection = () => {
                     y: 0,
                     scale: 0.05,
                     opacity: 0,
-                    rotate: 480,
                     zIndex: 10,
                   }
                 : inCircle
@@ -324,7 +356,6 @@ const ProjectsSection = () => {
                     y: 0,
                     scale: isCenter ? 1.1 : 0.82,
                     opacity: visible ? (isCenter ? 1 : 0.5) : 0,
-                    rotate: 0,
                     zIndex: isCenter ? 20 : 10,
                   };
 
@@ -364,8 +395,9 @@ const ProjectsSection = () => {
             {projects.map((p, i) => (
               <motion.div
                 key={p.id}
-                initial={{ opacity: 0, scale: 0.2, rotate: -120 }}
-                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                initial={{ opacity: 0, scale: 0.2 }}
+                animate={{ opacity: 1, scale: 1 }}
+                whileHover={{ y: -6, scale: 1.03 }}
                 transition={{
                   delay: reduceMotion ? 0 : i * 0.05,
                   duration: reduceMotion ? 0 : 0.5,

@@ -26,12 +26,6 @@ const SkillsSection = () => {
     visible: { y: 0, opacity: 1 },
   };
 
-  const skillCategories = [
-    { icon: "🖥️", title: "Web Development" },
-    { icon: "📱", title: "App Development" },
-    { icon: "🧠", title: "AI & Machine Learning" },
-  ];
-
   return (
     <motion.section
       id="skills"
@@ -51,95 +45,53 @@ const SkillsSection = () => {
         />
       </div>
 
-      {/* Section indicator */}
+      {/* Scroll-down mouse indicator */}
       <motion.div
         variants={itemVariants}
-        className="flex items-center justify-center mb-16"
+        className="flex items-center justify-center gap-4 mb-16"
       >
-        <motion.div
-          initial={{ width: 0 }}
-          animate={inView ? { width: 4 } : { width: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="h-12 bg-brand1/30"
+        <motion.span
+          animate={{ opacity: [0.2, 1, 0.2], y: [0, 10, 0] }}
+          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          className="block w-1 h-10 rounded bg-brand1/50"
         />
-        <motion.div
-          initial={{ scale: 0, rotate: -180 }}
-          animate={
-            inView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }
-          }
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-brand1 text-brand1 mx-2 bg-bg2"
-        >
-          0
-        </motion.div>
-        <motion.div
-          initial={{ width: 0 }}
-          animate={inView ? { width: 4 } : { width: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="h-12 bg-brand1/30"
+        <div className="w-7 h-12 rounded-full border-2 border-brand1 flex justify-center pt-2">
+          <motion.span
+            animate={{ y: [0, 14], opacity: [1, 0] }}
+            transition={{ duration: 1.4, repeat: Infinity, ease: "easeIn" }}
+            className="block w-1.5 h-3 rounded-full bg-brand1"
+          />
+        </div>
+        <motion.span
+          animate={{ opacity: [0.2, 1, 0.2], y: [0, 10, 0] }}
+          transition={{
+            duration: 1.6,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 0.3,
+          }}
+          className="block w-1 h-10 rounded bg-brand1/50"
         />
       </motion.div>
 
-      {/* Code bracket icon */}
+      {/* Section title */}
       <motion.div variants={itemVariants} className="text-center mb-10">
-        <motion.span
-          initial={{ scale: 0, rotate: 360 }}
-          animate={inView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: 360 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          className="text-5xl text-brand1 inline-block"
-        >
-          &lt;/&gt;
-        </motion.span>
-
         <motion.h2
           variants={itemVariants}
-          className="text-2xl font-bold mt-4 text-brand1"
+          className="text-2xl font-bold text-brand1"
         >
-          Skills
+          Tools
         </motion.h2>
-
-        <motion.p variants={itemVariants} className="text-gray-400 mt-2">
-          I am striving to never stop learning and improving
-        </motion.p>
       </motion.div>
 
-      {/* Skill categories */}
-      <div className="max-w-4xl mx-auto px-4 flex flex-wrap justify-center gap-8 mb-16">
-        {skillCategories.map((category, index) => (
-          <motion.div
-            key={category.title}
-            variants={itemVariants}
-            whileHover={{
-              scale: 1.05,
-              rotateY: 10,
-              boxShadow: "0 20px 40px rgba(108, 59, 170, 0.4)",
-            }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-brand1/10 border border-brand1/30 rounded-lg p-6 text-center w-64 cursor-pointer backdrop-blur-sm"
-          >
-            <motion.div
-              initial={{ scale: 0, rotate: -180 }}
-              animate={
-                inView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }
-              }
-              transition={{ delay: 0.8 + index * 0.2, duration: 0.6 }}
-              className="w-12 h-12 bg-zinc-800 rounded flex items-center justify-center mx-auto mb-4"
-            >
-              <span className="text-2xl">{category.icon}</span>
-            </motion.div>
-
-            <motion.h3
-              variants={itemVariants}
-              className="text-lg font-medium text-white"
-            >
-              {category.title}
-            </motion.h3>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Skill icons */}
-      <div className="flex flex-wrap justify-center gap-8 mx-32">
+      {/* Tool icons — top row slides in from the left, bottom row from the right */}
+      <div className="max-w-5xl mx-auto px-4 space-y-8">
+        <motion.div
+          initial={{ x: -140, opacity: 0 }}
+          animate={inView ? { x: 0, opacity: 1 } : { x: -140, opacity: 0 }}
+          transition={{ duration: 0.9, ease: "easeOut", delay: 0.3 }}
+          className="flex flex-wrap justify-center gap-8"
+        >
         {/* React */}
         <div className="w-20 h-20 rounded-full bg-zinc-800 border border-blue-500/30 flex items-center justify-center text-white">
           <svg
@@ -450,7 +402,14 @@ const SkillsSection = () => {
             />
           </svg>
         </div>
+        </motion.div>
 
+        <motion.div
+          initial={{ x: 140, opacity: 0 }}
+          animate={inView ? { x: 0, opacity: 1 } : { x: 140, opacity: 0 }}
+          transition={{ duration: 0.9, ease: "easeOut", delay: 0.5 }}
+          className="flex flex-wrap justify-center gap-8"
+        >
         {/* Next.js */}
         <div className="w-20 h-20 rounded-full bg-white border border-gray-200/30 flex items-center justify-center text-white">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
@@ -552,6 +511,7 @@ const SkillsSection = () => {
             />
           </svg>
         </div>
+        </motion.div>
       </div>
     </motion.section>
   );

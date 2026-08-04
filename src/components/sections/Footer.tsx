@@ -122,7 +122,7 @@ const Footer = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex items-center justify-center gap-2 text-gray-500 text-sm"
+          className="flex items-center justify-center gap-2 bg-brand1 text-black text-sm font-medium rounded-md py-3 px-4"
         >
           <Image
             src="/fkvasir-crest.png"

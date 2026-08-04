@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import Logo from "@/components/logo";
 import Link from "next/link";
 import LazySection from "@/components/LazySection";
-import { motion } from "framer-motion";
 
 // Import section components without dynamic loading
 import HomeSection from "@/components/sections/HomeSection";
@@ -73,7 +72,7 @@ function Home() {
         className={`fixed left-1/2 -translate-x-1/2 z-50 py-3 px-4 md:px-8 bg-bg1/90 backdrop-blur-md shadow-lg border border-brand1/40 transition-[top,width,max-width,border-radius] duration-500 ease-in-out ${
           scrolled
             ? "top-0 w-full max-w-[120rem] rounded-none"
-            : "top-4 w-[94%] max-w-6xl rounded-2xl"
+            : "top-4 w-[94%] max-w-[90rem] rounded-2xl"
         }`}
       >
         <div className="flex flex-col md:flex-row justify-between items-center w-full">
@@ -89,22 +88,19 @@ function Home() {
                 <li key={section} className="relative">
                   <Link
                     href={`#${section}`}
-                    className="navigation-link relative z-10"
+                    className="navigation-link relative z-10 transition-all duration-300"
+                    style={
+                      activeSection === section
+                        ? {
+                            color: "#CFB53B",
+                            textShadow:
+                              "0 0 8px rgba(207, 181, 59, 0.9), 0 0 18px rgba(207, 181, 59, 0.5)",
+                          }
+                        : undefined
+                    }
                     onClick={() => setActiveSection(section)}
                   >
                     {section.charAt(0).toUpperCase() + section.slice(1)}
-                    {activeSection === section && (
-                      <motion.div
-                        layoutId="activeIndicator"
-                        className="absolute -inset-x-2 -inset-y-1 bg-brand1/20 rounded-md border border-brand1/30"
-                        initial={false}
-                        transition={{
-                          type: "spring",
-                          stiffness: 500,
-                          damping: 35,
-                        }}
-                      />
-                    )}
                   </Link>
                 </li>
               ))}
