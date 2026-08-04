@@ -65,22 +65,23 @@ const AboutSection = () => {
         ))}
       </div>
 
-      {/* Trees & cliffs silhouette with a gold light behind the horizon */}
+      {/* Mountain river landscape backdrop */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <Image
+          src="/about-landscape.webp"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover opacity-40"
+        />
+        {/* Dark overlay so the terminal card and text stay readable */}
+        <div className="absolute inset-0 bg-gradient-to-b from-bg2 via-bg2/40 to-bg2" />
+        {/* Gold light wash to keep the palette consistent */}
         <div
           className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[46rem] h-[22rem] rounded-full blur-3xl"
           style={{
             background:
-              "radial-gradient(ellipse at center, rgba(207, 181, 59, 0.25), rgba(207, 181, 59, 0.08) 55%, transparent 75%)",
-          }}
-        />
-        <div
-          className="absolute bottom-0 left-0 w-full h-40 md:h-64"
-          style={{
-            backgroundImage: "url(/about-cliffs.svg)",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            backgroundPosition: "bottom center",
+              "radial-gradient(ellipse at center, rgba(207, 181, 59, 0.18), rgba(207, 181, 59, 0.06) 55%, transparent 75%)",
           }}
         />
       </div>
