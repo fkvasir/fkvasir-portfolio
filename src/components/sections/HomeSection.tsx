@@ -317,7 +317,7 @@ const HomeSection: React.FC<HomeSectionProps> = ({ profileImageKey }) => {
             }}
             whileTap={{ scale: 0.95 }}
             href="/resume.pdf"
-            download="Fulgent-Kvasir-Lavesores-Resume.pdf"
+            download="Fulgent_Kvasir_Lavesores-resume.pdf"
             className="flex items-center gap-2 mt-6 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-md hover:bg-zinc-700 transition"
           >
             <FaDownload />
