@@ -264,6 +264,42 @@ const ExperienceSection = () => {
           }}
           className="absolute bottom-[10%] -right-24 w-[26rem] h-[26rem] rounded-full bg-brand1 blur-3xl"
         />
+
+        {/* Edge bubbles — large circles flushed on alternating borders */}
+        <div className="absolute top-[8%] right-0 translate-x-1/2 w-[26rem] h-[26rem] md:w-[34rem] md:h-[34rem]">
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle at 30% 30%, rgba(108, 59, 170, 0.4), rgba(108, 59, 170, 0.14) 55%, transparent 78%)",
+            }}
+          />
+          <div className="absolute -inset-6 rounded-full border border-brand1/40" />
+          <div className="absolute inset-8 rounded-full border border-white/10" />
+        </div>
+        <div className="absolute top-[40%] left-0 -translate-x-1/2 w-[20rem] h-[20rem] md:w-[28rem] md:h-[28rem]">
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle at 70% 30%, rgba(108, 59, 170, 0.38), rgba(108, 59, 170, 0.12) 55%, transparent 78%)",
+            }}
+          />
+          <div className="absolute -inset-6 rounded-full border border-brand1/40" />
+          <div className="absolute inset-8 rounded-full border border-white/10" />
+        </div>
+        <div className="absolute top-[72%] right-0 translate-x-1/2 w-[16rem] h-[16rem] md:w-[24rem] md:h-[24rem]">
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle at 30% 40%, rgba(108, 59, 170, 0.36), rgba(108, 59, 170, 0.12) 55%, transparent 78%)",
+            }}
+          />
+          <div className="absolute -inset-6 rounded-full border border-brand1/40" />
+          <div className="absolute inset-8 rounded-full border border-white/10" />
+        </div>
+
         {EXPERIENCE_STARS.map((star, i) => (
           <motion.span
             key={i}
