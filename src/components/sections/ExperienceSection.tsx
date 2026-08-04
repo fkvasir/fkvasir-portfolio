@@ -18,7 +18,7 @@ const experiences: Experience[] = [
     role: "Full Stack Developer",
     period: "May 2025 – Present",
     description:
-      "Contributed to the development of a fullstack caregiver booking platform delivering personalized activities for elderly care.",
+      "Engineered core features for a fullstack caregiver booking platform for elderly care, architecting AI-generated products — NYT-style crosswords, memoir books and stories from guided forms, AI video generation with a customization tool, photo albums, care prints, and blog posts — plus UI/UX improvements.",
   },
   {
     title: "AI Daily Living Assistant & Personal Life OS",
@@ -26,7 +26,7 @@ const experiences: Experience[] = [
     role: "Full Stack Developer",
     period: "May 2026",
     description:
-      "Built and deployed a full-stack AI productivity suite (eight modules across an AI daily-living toolkit and a Life OS) on Next.js 16, NestJS 11, and PostgreSQL/Prisma in a Turborepo monorepo, with Gemini-powered recipe, meal-planning, and weather-aware outfit tools.",
+      "Architected and deployed a full-stack AI productivity suite (eight modules across an AI daily-living toolkit and a Life OS) on Next.js 16, NestJS 11, and PostgreSQL/Prisma in a Turborepo monorepo, with Gemini-powered recipe, meal-planning, and weather-aware outfit tools.",
   },
   {
     title: "Nutritionist Meal Plan System",
@@ -34,7 +34,7 @@ const experiences: Experience[] = [
     role: "Full Stack Developer",
     period: "Apr 2026 – May 2026",
     description:
-      "Built a subscription-based nutritionist meal-planning platform on Next.js, NestJS, and PostgreSQL with an R&D consultation-to-kitchen workflow, Xendit subscription payments, Resend transactional email, and free meal-delivery scheduling.",
+      "Engineered a subscription-based nutritionist meal-planning platform on Next.js, NestJS, and PostgreSQL with an R&D consultation-to-kitchen workflow, auditor verification of consultation recordings, bookings, and payments, admin dashboards for payments, R&D salary shares, and client stats, and an elder-friendly guided UI.",
   },
   {
     title: "E-commerce Website",
@@ -42,7 +42,7 @@ const experiences: Experience[] = [
     role: "Full Stack Developer",
     period: "Apr 2025 – Nov 2025",
     description:
-      "Developed a fullstack e-commerce platform with booking, product pages, and user-community discussion features.",
+      "Engineered a marketplace where users post and buy products, with seller-created community-style marketplaces that let members shape which products are offered, plus booking, product pages, and community discussions.",
   },
   {
     title: "E-Referral for Hospitals",
@@ -50,7 +50,7 @@ const experiences: Experience[] = [
     role: "Full Stack Developer",
     period: "Feb 2025 – Jun 2025",
     description:
-      "Developed a secure web-based system with login enabling healthcare personnel to manage hospital-to-hospital patient referrals.",
+      "Engineered a secure web-based system with authenticated access, enabling healthcare personnel to manage hospital-to-hospital patient referrals.",
   },
   {
     title: "Income & Expenses Tracker",
@@ -58,7 +58,7 @@ const experiences: Experience[] = [
     role: "Full Stack Developer",
     period: "Nov 2024 – Jan 2025",
     description:
-      "Designed and implemented a user-friendly application to track income and expenses. Ensured secure data management with encryption and authentication features.",
+      "Designed and implemented a user-friendly application to track income and expenses, engineering secure data management with encryption and authentication.",
   },
   {
     title: "Payment System",
@@ -66,7 +66,7 @@ const experiences: Experience[] = [
     role: "Frontend Developer",
     period: "Nov 2024",
     description:
-      "Designed and developed an intuitive user interface for seamless payment processing, ensuring a responsive and user-friendly experience across devices. Implemented static payment status updates for design and user-experience.",
+      "Designed and engineered an intuitive user interface for seamless payment processing, ensuring a responsive and user-friendly experience across devices. Implemented static payment status updates for design and user experience.",
   },
   {
     title: "Rush Gym App",
@@ -74,7 +74,7 @@ const experiences: Experience[] = [
     role: "Mobile Application Frontend Developer",
     period: "Jun 2024 – Aug 2024",
     description:
-      "Implemented the Profile, Booking, and Wallet Screens for the Gym App using the React Native framework and Expo for production.",
+      "Engineered and shipped the Profile, Booking, and Wallet screens for the gym app using the React Native framework and Expo for production.",
   },
   {
     title: "MSU-IIT Faculty Program System",
@@ -82,7 +82,7 @@ const experiences: Experience[] = [
     role: "Full Stack Developer",
     period: "Aug 2023 – Dec 2023",
     description:
-      "A university website project where I designed and developed the landing page feature and implemented backend MySQL databases for courses and sections, enabling faculty to enroll students to courses and assign sections to students.",
+      "A university website project where I architected the landing page feature and engineered backend MySQL databases for courses and sections, enabling faculty to enroll students in courses and assign sections to students.",
   },
 ];
 
