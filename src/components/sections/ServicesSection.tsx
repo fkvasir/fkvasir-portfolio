@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import {
@@ -74,28 +74,179 @@ const services = [
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.8,
+      delayChildren: 0.3,
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 40, opacity: 0 },
+  visible: { y: 0, opacity: 1 },
+};
+
+type Service = (typeof services)[number];
+
+// On touch devices (no hover), the card crossing the middle band of the
+// viewport activates its hover state automatically while scrolling.
+const ServiceCard = ({
+  service,
+  autoActivate,
+}: {
+  service: Service;
+  autoActivate: boolean;
+}) => {
+  const { icon: Icon, title, blurb, tech } = service;
+  const [centerRef, centered] = useInView({
+    rootMargin: "-40% 0px -40% 0px",
+    threshold: 0,
+    skip: !autoActivate,
+  });
+  const active = autoActivate && centered;
+
+  return (
+    <motion.div
+      ref={centerRef}
+      variants={itemVariants}
+      whileHover={{ scale: 1.03 }}
+      className="group relative pt-8"
+    >
+      {/* Card body */}
+      <div
+        className={`relative overflow-hidden bg-bg1/80 border border-brand1/30 rounded-lg px-6 pb-6 pt-12 backdrop-blur-sm transition-shadow duration-300 group-hover:shadow-[0_20px_40px_rgba(108,59,170,0.4)] ${
+          active ? "shadow-[0_20px_40px_rgba(108,59,170,0.4)]" : ""
+        }`}
+      >
+        {/* Hover night scene — stars, shooting star, treeline */}
+        <div
+          className={`absolute inset-0 pointer-events-none transition-opacity duration-500 ${
+            active ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+          }`}
+          aria-hidden="true"
+        >
+          {CARD_STARS.map((star, i) => (
+            <motion.span
+              key={i}
+              className="absolute rounded-full bg-white"
+              style={{
+                top: star.top,
+                left: star.left,
+                width: star.size,
+                height: star.size,
+              }}
+              animate={{ opacity: [0.15, 0.9, 0.15], scale: [1, 1.3, 1] }}
+              transition={{
+                duration: star.duration,
+                repeat: Infinity,
+                delay: star.delay,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+          <motion.span
+            className="absolute top-[15%] left-[75%] h-px w-16 bg-gradient-to-r from-white to-transparent"
+            style={{ rotate: -35 }}
+            animate={{ x: [0, -140], y: [0, 90], opacity: [0, 1, 0] }}
+            transition={{
+              duration: 1.2,
+              repeat: Infinity,
+              repeatDelay: 3,
+              ease: "easeOut",
+            }}
+          />
+          <div
+            className="absolute bottom-0 left-0 w-full h-16 opacity-60"
+            style={{
+              backgroundImage: "url(/trees-m.webp)",
+              backgroundRepeat: "repeat-x",
+              backgroundSize: "auto 100%",
+              backgroundPosition: "bottom left",
+            }}
+          />
+        </div>
+
+        {/* Gold corner fill sweeping in diagonally from the bottom right */}
+        <div
+          className={`absolute bottom-0 right-0 w-14 h-14 pointer-events-none transition-all duration-300 ease-out ${
+            active
+              ? "opacity-100 translate-x-0 translate-y-0"
+              : "opacity-0 translate-x-14 translate-y-14 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0"
+          }`}
+          aria-hidden="true"
+          style={{
+            clipPath: "polygon(100% 0, 100% 100%, 0 100%)",
+            background:
+              "linear-gradient(135deg, #E8D77A, #CFB53B 55%, #A98F2F)",
+          }}
+        />
+
+        <div className="relative z-10">
+          <h3 className="text-white font-bold text-lg mb-2">{title}</h3>
+          <p className="text-gray-400 text-sm mb-3">{blurb}</p>
+          <span className="text-xs font-mono text-brand1">{tech}</span>
+        </div>
+      </div>
+
+      {/* Icon chip overlapping the card's top edge — morphs into the moon */}
+      <div
+        className={`absolute top-0 left-6 z-20 w-16 h-16 rounded-lg border flex items-center justify-center transition-colors duration-500 ${
+          active
+            ? "bg-transparent border-transparent"
+            : "bg-bg1 border-brand1/30 group-hover:bg-transparent group-hover:border-transparent"
+        }`}
+      >
+        <span
+          className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ${
+            active
+              ? "rotate-180 scale-0 opacity-0"
+              : "group-hover:rotate-180 group-hover:scale-0 group-hover:opacity-0"
+          }`}
+        >
+          <Icon className="text-brand1 text-2xl" />
+        </span>
+        <span
+          className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ${
+            active
+              ? "rotate-0 scale-100 opacity-100"
+              : "-rotate-180 scale-0 opacity-0 group-hover:rotate-0 group-hover:scale-100 group-hover:opacity-100"
+          }`}
+        >
+          <span
+            className="block w-14 h-14 rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle at 35% 35%, #E8D77A, #CFB53B 60%, #A98F2F)",
+              boxShadow:
+                "0 0 25px rgba(207, 181, 59, 0.8), 0 0 60px rgba(207, 181, 59, 0.4)",
+            }}
+          />
+        </span>
+      </div>
+    </motion.div>
+  );
+};
+
 const ServicesSection = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.8,
-        delayChildren: 0.3,
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 40, opacity: 0 },
-    visible: { y: 0, opacity: 1 },
-  };
+  // Touch devices can't hover — activate the centered card instead
+  const [canHover, setCanHover] = useState(true);
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: none)");
+    const update = () => setCanHover(!mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   return (
     <section
@@ -193,96 +344,12 @@ const ServicesSection = () => {
         </motion.p>
 
         <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map(({ icon: Icon, title, blurb, tech }) => (
-            <motion.div
-              key={title}
-              variants={itemVariants}
-              whileHover={{ scale: 1.03 }}
-              className="group relative pt-8"
-            >
-              {/* Card body */}
-              <div className="relative overflow-hidden bg-bg1/80 border border-brand1/30 rounded-lg px-6 pb-6 pt-12 backdrop-blur-sm transition-shadow duration-300 group-hover:shadow-[0_20px_40px_rgba(108,59,170,0.4)]">
-              {/* Hover night scene — stars, shooting star, treeline */}
-              <div
-                className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                aria-hidden="true"
-              >
-                {CARD_STARS.map((star, i) => (
-                  <motion.span
-                    key={i}
-                    className="absolute rounded-full bg-white"
-                    style={{
-                      top: star.top,
-                      left: star.left,
-                      width: star.size,
-                      height: star.size,
-                    }}
-                    animate={{ opacity: [0.15, 0.9, 0.15], scale: [1, 1.3, 1] }}
-                    transition={{
-                      duration: star.duration,
-                      repeat: Infinity,
-                      delay: star.delay,
-                      ease: "easeInOut",
-                    }}
-                  />
-                ))}
-                <motion.span
-                  className="absolute top-[15%] left-[75%] h-px w-16 bg-gradient-to-r from-white to-transparent"
-                  style={{ rotate: -35 }}
-                  animate={{ x: [0, -140], y: [0, 90], opacity: [0, 1, 0] }}
-                  transition={{
-                    duration: 1.2,
-                    repeat: Infinity,
-                    repeatDelay: 3,
-                    ease: "easeOut",
-                  }}
-                />
-                <div
-                  className="absolute bottom-0 left-0 w-full h-16 opacity-60"
-                  style={{
-                    backgroundImage: "url(/trees-m.webp)",
-                    backgroundRepeat: "repeat-x",
-                    backgroundSize: "auto 100%",
-                    backgroundPosition: "bottom left",
-                  }}
-                />
-              </div>
-
-              {/* Gold corner fill sweeping in diagonally from the bottom right */}
-              <div
-                className="absolute bottom-0 right-0 w-14 h-14 pointer-events-none opacity-0 translate-x-14 translate-y-14 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-300 ease-out"
-                aria-hidden="true"
-                style={{
-                  clipPath: "polygon(100% 0, 100% 100%, 0 100%)",
-                  background: "linear-gradient(135deg, #E8D77A, #CFB53B 55%, #A98F2F)",
-                }}
-              />
-
-              <div className="relative z-10">
-                <h3 className="text-white font-bold text-lg mb-2">{title}</h3>
-                <p className="text-gray-400 text-sm mb-3">{blurb}</p>
-                <span className="text-xs font-mono text-brand1">{tech}</span>
-              </div>
-              </div>
-
-              {/* Icon chip overlapping the card's top edge — morphs into the moon */}
-              <div className="absolute top-0 left-6 z-20 w-16 h-16 rounded-lg bg-bg1 border border-brand1/30 flex items-center justify-center transition-colors duration-500 group-hover:bg-transparent group-hover:border-transparent">
-                <span className="absolute inset-0 flex items-center justify-center transition-all duration-500 group-hover:rotate-180 group-hover:scale-0 group-hover:opacity-0">
-                  <Icon className="text-brand1 text-2xl" />
-                </span>
-                <span className="absolute inset-0 flex items-center justify-center -rotate-180 scale-0 opacity-0 transition-all duration-500 group-hover:rotate-0 group-hover:scale-100 group-hover:opacity-100">
-                  <span
-                    className="block w-14 h-14 rounded-full"
-                    style={{
-                      background:
-                        "radial-gradient(circle at 35% 35%, #E8D77A, #CFB53B 60%, #A98F2F)",
-                      boxShadow:
-                        "0 0 25px rgba(207, 181, 59, 0.8), 0 0 60px rgba(207, 181, 59, 0.4)",
-                    }}
-                  />
-                </span>
-              </div>
-            </motion.div>
+          {services.map((service) => (
+            <ServiceCard
+              key={service.title}
+              service={service}
+              autoActivate={!canHover}
+            />
           ))}
         </div>
       </motion.div>

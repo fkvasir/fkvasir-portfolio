@@ -65,6 +65,26 @@ const AboutSection = () => {
         ))}
       </div>
 
+      {/* Trees & cliffs silhouette with a gold light behind the horizon */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[46rem] h-[22rem] rounded-full blur-3xl"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, rgba(207, 181, 59, 0.25), rgba(207, 181, 59, 0.08) 55%, transparent 75%)",
+          }}
+        />
+        <div
+          className="absolute bottom-0 left-0 w-full h-40 md:h-64"
+          style={{
+            backgroundImage: "url(/about-cliffs.svg)",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            backgroundPosition: "bottom center",
+          }}
+        />
+      </div>
+
       <motion.div
         variants={containerVariants}
         initial="hidden"

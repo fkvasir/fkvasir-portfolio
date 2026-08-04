@@ -13,14 +13,14 @@ type Experience = {
 
 // Ambient backdrop stars for the timeline
 const EXPERIENCE_STARS = [
-  { top: "8%", left: "12%", size: 2, duration: 2.6, delay: 0.2 },
-  { top: "14%", left: "78%", size: 3, duration: 3.1, delay: 0.9 },
-  { top: "30%", left: "6%", size: 2, duration: 2.8, delay: 1.4 },
-  { top: "42%", left: "92%", size: 2, duration: 3.3, delay: 0.4 },
-  { top: "58%", left: "10%", size: 2, duration: 2.5, delay: 1.8 },
-  { top: "66%", left: "85%", size: 3, duration: 3.0, delay: 0.6 },
-  { top: "80%", left: "20%", size: 2, duration: 2.9, delay: 1.1 },
-  { top: "88%", left: "70%", size: 2, duration: 3.4, delay: 0.3 },
+  { top: "8%", left: "12%", size: 3, duration: 2.6, delay: 0.2 },
+  { top: "14%", left: "78%", size: 4, duration: 3.1, delay: 0.9 },
+  { top: "30%", left: "6%", size: 3, duration: 2.8, delay: 1.4 },
+  { top: "42%", left: "92%", size: 3, duration: 3.3, delay: 0.4 },
+  { top: "58%", left: "10%", size: 3, duration: 2.5, delay: 1.8 },
+  { top: "66%", left: "85%", size: 4, duration: 3.0, delay: 0.6 },
+  { top: "80%", left: "20%", size: 3, duration: 2.9, delay: 1.1 },
+  { top: "88%", left: "70%", size: 3, duration: 3.4, delay: 0.3 },
 ];
 
 const experiences: Experience[] = [
@@ -245,7 +245,7 @@ const ExperienceSection = () => {
           animate={{
             x: [0, 60, 0],
             y: [0, -30, 0],
-            opacity: [0.05, 0.12, 0.05],
+            opacity: [0.12, 0.24, 0.12],
           }}
           transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-[15%] -left-24 w-[28rem] h-[28rem] rounded-full bg-brand1 blur-3xl"
@@ -254,7 +254,7 @@ const ExperienceSection = () => {
           animate={{
             x: [0, -50, 0],
             y: [0, 40, 0],
-            opacity: [0.04, 0.1, 0.04],
+            opacity: [0.1, 0.2, 0.1],
           }}
           transition={{
             duration: 20,
@@ -285,22 +285,26 @@ const ExperienceSection = () => {
         ))}
         {/* Comet */}
         <motion.span
-          className="absolute top-[18%] left-[90%] h-0.5 w-40 rounded-full bg-gradient-to-r from-white via-brand1/80 to-transparent"
+          className="absolute top-[18%] left-[90%] h-1 w-56 rounded-full bg-gradient-to-r from-white via-brand1 to-transparent"
           style={{
             rotate: -30,
-            boxShadow: "0 0 12px rgba(255, 255, 255, 0.7)",
+            boxShadow:
+              "0 0 18px rgba(255, 255, 255, 0.9), 0 0 40px rgba(207, 181, 59, 0.5)",
           }}
           animate={{ x: [0, -900], y: [0, 480], opacity: [0, 1, 1, 0] }}
           transition={{
             duration: 2.4,
             repeat: Infinity,
-            repeatDelay: 8,
+            repeatDelay: 5,
             ease: "easeOut",
           }}
         />
         {/* UFO */}
         <motion.span
-          className="absolute top-[55%] left-0 text-3xl"
+          className="absolute top-[55%] left-0 text-5xl"
+          style={{
+            filter: "drop-shadow(0 6px 14px rgba(207, 181, 59, 0.6))",
+          }}
           animate={{
             x: ["-10vw", "110vw"],
             y: [0, -24, 10, -18, 0],
@@ -308,9 +312,9 @@ const ExperienceSection = () => {
             opacity: [0, 1, 1, 1, 0],
           }}
           transition={{
-            duration: 18,
+            duration: 14,
             repeat: Infinity,
-            repeatDelay: 6,
+            repeatDelay: 3,
             ease: "linear",
           }}
         >
