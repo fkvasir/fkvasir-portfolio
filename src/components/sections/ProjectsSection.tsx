@@ -69,6 +69,11 @@ const ProjectCard = ({
         {project.period && (
           <p className="text-brand1 text-xs mt-1">{project.period}</p>
         )}
+        {variant === "grid" && (
+          <p className="text-gray-400 text-sm mt-2 line-clamp-4">
+            {project.description}
+          </p>
+        )}
         <div className="flex flex-wrap gap-1 mt-3">
           {project.tags.slice(0, 3).map((tag, i) => (
             <span
